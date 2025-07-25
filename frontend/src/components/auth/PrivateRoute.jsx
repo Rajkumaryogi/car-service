@@ -8,7 +8,7 @@ export default function PrivateRoute({ children }) {
 
   if (loading) return <LoadingSpinner />
 
-  if (!user) {
+  if (!user || user?.isAdmin) {
     return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />
   }
 
