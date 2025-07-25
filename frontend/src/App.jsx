@@ -28,7 +28,7 @@ function App() {
         {/* Toast Container */}
         <ToastContainer
           position="top-right"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -42,8 +42,6 @@ function App() {
         {/* Conditional rendering for Navbar */}
         <Routes>
           {/* Routes without Navbar */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/admin-login" element={null} />
           <Route path="/admin/*" element={null} />
 
@@ -54,6 +52,8 @@ function App() {
         <main className="flex-grow">
           <Routes>
             {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
             <Route path="/admin-login" element={<AdminLogin />} />
