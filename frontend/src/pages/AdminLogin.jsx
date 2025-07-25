@@ -2,70 +2,124 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import * as adminService from '../services/admin'
+import { FaUserShield, FaEnvelope, FaLock, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
-  const { user,loading, adminLogin } = useAuth()
+  const { user, loading, adminLogin } = useAuth()
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user?.isAdmin && !loading) {
-      // navigate('/admin');
-      // No need to navigate here - the adminLogin will handle it
+      navigate('/admin')
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { email, password } = e.target.elements;
+    setIsSubmitting(true)
+    const { email, password } = e.target.elements
     
     try {
-      await adminLogin( email, password)
+      await adminLogin(email, password)
       navigate('/admin')
     } catch (err) {
       setError(err.response?.data?.error || 'Admin login failed')
-      console.error('Login error:', err.response?.data);
+      console.error('Login error:', err.response?.data)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-   if (loading || user?.isAdmin) {
-    return <div className="text-center py-12">Loading...</div>;
+  if (loading || user?.isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <FaSpinner className="animate-spin text-4xl text-blue-600 mx-auto mb-4" />
+          <p className="text-lg">Loading admin dashboard...</p>
+        </div>
+      </div>
+    )
   }
 
-
-
   return (
-    <div className="max-w-md mx-auto py-12">
-      <h1 className="text-3xl font-bold mb-6 text-center">Admin Login</h1>
-      {error && <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>}
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block mb-1">Admin Email</label>
-          <input
-            type="email"
-            id="email"
-            required
-            className="w-full p-2 border rounded"
-            defaultValue="rajyogi1811@gmail.com"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
+        <div className="text-center mb-8">
+          <div className="mx-auto bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <FaUserShield className="text-blue-600 text-3xl" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Admin Portal</h1>
+          <p className="text-gray-600 mt-2">Sign in to access the dashboard</p>
         </div>
+
+        {error && (
+          <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-lg flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {error}
+          </div>
+        )}
         
-        <div>
-          <label htmlFor="password" className="block mb-1">Password</label>
-          <input
-            type="password"
-            id="password"
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-          Login as Admin
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <FaEnvelope className="text-gray-400" />
+              Admin Email
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                required
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="admin@example.com"
+                defaultValue="rajyogi1811@gmail.com"
+              />
+              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+          
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <FaLock className="text-gray-400" />
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                id="password"
+                required
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="••••••••"
+              />
+              <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+          
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-white font-medium ${
+              isSubmitting ? 'bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
+            } transition-colors`}
+          >
+            {isSubmitting ? (
+              <>
+                <FaSpinner className="animate-spin" />
+                Authenticating...
+              </>
+            ) : (
+              <>
+                <FaSignInAlt />
+                Login as Admin
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   )
-};
+}

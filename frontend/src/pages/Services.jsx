@@ -3,23 +3,27 @@ import { useAuth } from '../contexts/AuthContext'
 import * as bookingService from '../services/booking'
 import * as cartService from '../services/cart'
 import { toast } from 'react-toastify'
+import ServiceCard from '../components/services/ServiceCard'
+import { FaCar, FaCalendarAlt, FaTools, FaSpinner } from 'react-icons/fa'
 
 export default function Services() {
   const { user } = useAuth()
   const [services, setServices] = useState([])
   const [selectedCar, setSelectedCar] = useState('')
   const [date, setDate] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [isBooking, setIsBooking] = useState(false)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [activeService, setActiveService] = useState(null)
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        setLoading(true)
         const data = await bookingService.getServices()
         setServices(data)
       } catch (err) {
-        toast.error('Failed to load services')
         console.error('Error fetching services:', err)
+        toast.error('Failed to load services. Please try again later.')
       } finally {
         setLoading(false)
       }
@@ -38,10 +42,11 @@ export default function Services() {
     }
     
     try {
+      setIsBooking(true)
+      setActiveService(serviceId)
       const service = services.find(s => s._id === serviceId)
-      toast.info(`Booking ${service.name}...`)
       
-      await bookingService.bookService({
+      const booking = await bookingService.bookService({
         serviceType: serviceId,
         car: {
           model: user.cars.find(c => c._id === selectedCar).model,
@@ -50,13 +55,20 @@ export default function Services() {
         scheduledDate: date
       })
       
-      toast.success('Service booked successfully!')
+      toast.success(`${service.name} booked successfully!`)
       setSelectedCar('')
       setDate('')
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Failed to book service'
-      toast.error(errorMessage)
-      console.error('Booking error:', err)
+      if (err?.status === 201) {
+        toast.success('Service booked successfully!')
+      } else {
+        const errorMessage = err?.message || 'Failed to book service'
+        toast.error(errorMessage)
+        console.error('Booking error:', err)
+      }
+    } finally {
+      setIsBooking(false)
+      setActiveService(null)
     }
   }
 
@@ -67,101 +79,108 @@ export default function Services() {
     }
     
     try {
+      setIsAddingToCart(true)
+      setActiveService(serviceId)
       const service = services.find(s => s._id === serviceId)
-      toast.info(`Adding ${service.name} to cart...`)
       
       await cartService.addToCart(serviceId)
-      toast.success('Service added to cart!')
+      toast.success(`${service.name} added to cart!`)
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Failed to add to cart'
       toast.error(errorMessage)
       console.error('Add to cart error:', err)
+    } finally {
+      setIsAddingToCart(false)
+      setActiveService(null)
     }
   }
 
   if (loading) {
     return (
-      <div className="text-center py-12">
-        <h1 className="text-2xl font-bold mb-6">Our Services</h1>
-        <p>Loading services...</p>
+      <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4" />
+          <p className="text-lg">Loading services...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Our Services</h1>
-      
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold flex items-center">
+          <FaTools className="mr-2 text-blue-600" />
+          Our Services
+        </h1>
+      </div>
+
       {user && (
-        <div className="mb-6 bg-white p-4 rounded shadow">
-          <h2 className="font-semibold mb-2">Book a Service</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 sm:mb-8">
+          <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <FaCalendarAlt className="mr-2 text-blue-600" />
+            Book a Service
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div>
-              <label className="block mb-1">Select Car</label>
+              <label className="block text-gray-700 mb-2 flex items-center">
+                <FaCar className="mr-2" />
+                Select Car
+              </label>
               <select 
                 value={selectedCar}
                 onChange={(e) => setSelectedCar(e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={isBooking || isAddingToCart}
               >
                 <option value="">Select Car</option>
-                {user.cars.map(car => (
+                {user.cars?.map(car => (
                   <option key={car._id} value={car._id}>
-                    {car.model} ({car.licensePlate})
+                    {car.model} {car.licensePlate && `(${car.licensePlate})`}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block mb-1">Select Date</label>
+              <label className="block text-gray-700 mb-2 flex items-center">
+                <FaCalendarAlt className="mr-2" />
+                Select Date & Time
+              </label>
               <input
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min={new Date().toISOString().slice(0, 16)}
+                disabled={isBooking || isAddingToCart}
               />
             </div>
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map(service => (
-          <div key={service._id} className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold mb-2">{service.name}</h3>
-            <p className="text-gray-600 mb-4">{service.description}</p>
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-bold">₹{service.price.toFixed(2)}</span>
-              {user ? (
-                <div className="space-x-2">
-                  <button 
-                    onClick={() => handleBookNow(service._id)}
-                    className={`px-4 py-2 rounded text-white ${
-                      !selectedCar || !date ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                    } transition-colors`}
-                    disabled={!selectedCar || !date}
-                  >
-                    Book Now
-                  </button>
-                  <button 
-                    onClick={() => handleAddToCart(service._id)}
-                    className="px-4 py-2 rounded text-white bg-gray-600 hover:bg-gray-700 transition-colors"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              ) : (
-                <button 
-                  className="px-4 py-2 rounded text-white bg-blue-400 cursor-not-allowed"
-                  disabled
-                >
-                  Login to Book
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      {services.length === 0 ? (
+        <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md text-center">
+          <h2 className="text-xl font-semibold mb-4">No Services Available</h2>
+          <p className="text-gray-600">Please check back later for our service offerings.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {services.map(service => (
+            <ServiceCard
+              key={service._id}
+              service={service}
+              selectedCar={selectedCar}
+              date={date}
+              onBookNow={handleBookNow}
+              onAddToCart={handleAddToCart}
+              isBooking={isBooking}
+              isAddingToCart={isAddingToCart}
+              activeService={activeService}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
