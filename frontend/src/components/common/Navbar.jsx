@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.jpeg'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -9,7 +9,7 @@ export default function Navbar() {
     <nav className="bg-blue-600 text-white shadow">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
       <Link to="/">
-        <img src={logo} alt="Logo" className="w-20 h-20 border" />
+        <img src={logo} alt="Logo" className="w-20 h-20" />
       </Link>
         <Link to="/" className="text-xl font-bold">Car Service</Link>
         
