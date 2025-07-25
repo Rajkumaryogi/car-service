@@ -1,17 +1,20 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import LoadingSpinner from '../common/LoadingSpinner'
 
 export default function AdminRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth()
+  const location = useLocation()
 
   if (loading) return <LoadingSpinner />
 
   if (!user?.isAdmin) {
-    return <Navigate to="/admin-login" replace />
+    // Redirect to admin login with return URL
+    return <Navigate to={`/admin-login?redirect=${encodeURIComponent(location.pathname)}`} replace />
   }
 
-  // if (!user?.isAdmin || user.email !== 'rajyogi1811@gmail.com') {
+  // Optional: Add specific admin email check
+  // if (user.email !== 'rajyogi1811@gmail.com') {
   //   return <Navigate to="/" replace />
   // }
 

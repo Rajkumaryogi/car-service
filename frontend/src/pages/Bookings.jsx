@@ -67,7 +67,7 @@ export default function Bookings() {
               )}
               <div className="mt-3 pt-3 border-t">
                 <p className="font-medium">
-                  Total: ${booking.invoice.totalCost} ({booking.invoice.paymentStatus})
+                  Total: ₹{booking.invoice.totalCost} ({booking.invoice.paymentStatus})
                 </p>
               </div>
             </div>

@@ -11,6 +11,7 @@ router.get('/me', adminMiddleware, (req, res) => {
 router.get('/users', adminMiddleware, adminController.getAllUsers);
 router.get('/bookings', adminMiddleware, adminController.getAllBookings);
 router.patch('/bookings/:id', adminMiddleware, adminController.updateBookingStatus);
-router.post('/services', adminMiddleware, adminController.addService);
+router.get('/services', adminMiddleware, adminController.getAllServices);
+router.post('/service', adminMiddleware, adminController.addService);
 
 module.exports = router;

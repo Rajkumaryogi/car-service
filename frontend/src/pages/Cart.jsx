@@ -93,7 +93,7 @@ export default function Cart() {
                     <p className="text-gray-600">{item.service.description}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold">${item.service.price} x {item.quantity}</p>
+                    <p className="font-bold">₹{item.service.price} x {item.quantity}</p>
                     <button 
                       onClick={() => removeFromCart(item.service._id)}
                       className="text-red-500 text-sm hover:underline"
@@ -141,11 +141,11 @@ export default function Cart() {
             <div className="border-t pt-4 mt-4">
               <div className="flex justify-between mb-2">
                 <span>Subtotal:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-lg">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
 
               <button

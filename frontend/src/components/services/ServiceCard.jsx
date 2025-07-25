@@ -11,7 +11,7 @@ export default function ServiceCard({ service }) {
       
       <div className="flex justify-between items-center">
         <div>
-          <span className="text-lg font-bold">${service.price}</span>
+          <span className="text-lg font-bold">₹{service.price}</span>
           <span className="text-gray-500 text-sm ml-2">
             ({Math.floor(service.duration / 60)}h {service.duration % 60}m)
           </span>

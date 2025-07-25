@@ -53,7 +53,7 @@ export default function AddServiceForm({ onServiceAdded }) {
       
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div>
-          <label className="block text-sm mb-1">Price ($)</label>
+          <label className="block text-sm mb-1">Price (₹)</label>
           <input
             type="number"
             value={formData.price}

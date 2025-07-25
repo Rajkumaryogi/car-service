@@ -4,6 +4,7 @@ import * as bookingService from '../services/booking'
 import { addUserCar } from '../services/user'
 import { toast } from 'react-toastify'
 
+
 export default function Dashboard() {
   const { user, setUser } = useAuth()
   const [bookings, setBookings] = useState([])
