@@ -71,6 +71,22 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+//for user details
+exports.getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+    .select('-password') // Exclude password
+    .populate('cars');
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+    res.send(user);
+  } catch (err) {
+    console.error("Get user details error:", err); // Debug log
+    res.status(500).send(err);
+  }
+};
+
 exports.getAllBookings = async (req, res) => {
   try {
     const bookings = await CarService.find({}).populate("user");
