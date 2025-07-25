@@ -9,12 +9,22 @@ exports.bookService = async (req, res) => {
     });
     await service.save();
     
-    // Emit socket event for new booking
-    req.io.emit('newBooking', service);
+    // Populate the serviceType before returning
+    const populatedService = await CarService.findById(service._id)
+      .populate('serviceType', 'name duration price')
+      .lean();
     
-    res.status(201).send(service);
+    // req.io.emit('newBooking', populatedService);
+    
+    res.status(201).json({
+      success: true,
+      service: populatedService
+    });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).json({
+      success: false,
+      message: err.message || 'Failed to create booking'
+    });
   }
 };
 
