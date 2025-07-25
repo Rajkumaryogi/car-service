@@ -12,7 +12,7 @@ export default function Login() {
   // Redirect if already logged in (only for regular users)
   useEffect(() => {
     if (user && !user.isAdmin && !loading) {
-      toast.info('You are already logged in')
+      toast.info('You are logged in')
       navigate('/dashboard')
     }
     
