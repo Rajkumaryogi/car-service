@@ -8,10 +8,11 @@ router.get('/me', adminMiddleware, (req, res) => {
     res.send(req.admin);
     router.get('/logout', adminController.adminLogout);
 });
+router.post('/service', adminMiddleware, adminController.addService);
+router.get('/services', adminMiddleware, adminController.getAllServices);
 router.get('/users', adminMiddleware, adminController.getAllUsers);
 router.get('/bookings', adminMiddleware, adminController.getAllBookings);
 router.patch('/bookings/:id', adminMiddleware, adminController.updateBookingStatus);
-router.get('/services', adminMiddleware, adminController.getAllServices);
-router.post('/service', adminMiddleware, adminController.addService);
+router.get('/user/:userId', adminMiddleware, adminController.getUserDetails);
 
 module.exports = router;
