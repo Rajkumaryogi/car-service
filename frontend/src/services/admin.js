@@ -85,6 +85,21 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getUserDetails = async (userId) => {
+  try {
+    const token = getAdminToken()
+    const response = await axios.get(`${API_URL}/api/admin/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data
+  } catch (err) {
+    console.error('Error fetching user details:', err)
+    throw err
+  }
+}
+
 export const getAllBookings = async () => {
   try {
     const token = getAdminToken();
