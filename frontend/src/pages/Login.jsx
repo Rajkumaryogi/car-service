@@ -12,7 +12,7 @@ export default function Login() {
  
   useEffect(() => {
     if (user && !user.isAdmin && !loading) {
-      toast.info('You are logged in')
+      // toast.info('You are logged in')
       navigate('/dashboard')
     }
   }, [user, loading, navigate, adminLogout])

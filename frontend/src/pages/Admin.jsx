@@ -9,14 +9,15 @@ import LoadingSpinner from '../components/common/LoadingSpinner'
 
 export default function Admin() {
   const [stats, setStats] = useState({
-    bookings: 0,
-    users: 0,
-    revenue: 0,
+    totalUsers: 0,
+    totalBookings: 0,
     pendingBookings: 0,
     completedBookings: 0,
+    totalRevenue: 0,
     recentBookings: []
   })
   const [loading, setLoading] = useState(true)
+  const [refresh, setRefresh] = useState(false)
   const { user } = useAuth()
   const socket = useSocket()
   const navigate = useNavigate()
@@ -25,10 +26,34 @@ export default function Admin() {
     const fetchStats = async () => {
       try {
         setLoading(true)
-        const data = await adminService.getAdminStats()
+        const [
+          usersData,
+          bookingsData,
+          servicesData,
+          recentBookings
+        ] = await Promise.all([
+          adminService.getAllUsers(),
+          adminService.getAllBookings(),
+          adminService.getAllServices(),
+          adminService.getAllBookings({ limit: 5, sort: '-createdAt' })
+        ])
+
+        // Calculate stats
+        const totalUsers = usersData.length
+        const totalBookings = bookingsData.length
+        const pendingBookings = bookingsData.filter(b => b.status === 'Pending').length
+        const completedBookings = bookingsData.filter(b => b.status === 'Completed').length
+        const totalRevenue = bookingsData
+          .filter(b => b.status === 'Completed')
+          .reduce((sum, booking) => sum + (booking.serviceType?.price || 0), 0)
+
         setStats({
-          ...data,
-          revenue: data.revenue || 0 // Ensure revenue has a default value
+          totalUsers,
+          totalBookings,
+          pendingBookings,
+          completedBookings: completedBookings,
+          totalRevenue,
+          recentBookings: recentBookings.slice(0, 5)
         })
       } catch (err) {
         if (err.response?.status === 401) {
@@ -48,14 +73,14 @@ export default function Admin() {
     if (socket) {
       socket.on('adminNotification', (newBooking) => {
         toast.info(`New booking received: ${newBooking.serviceType?.name}`)
-        fetchStats()
+        setRefresh(prev => !prev) // Trigger refresh
       })
     }
 
     return () => {
       if (socket) socket.off('adminNotification')
     }
-  }, [navigate, socket])
+  }, [navigate, socket, refresh])
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
@@ -63,6 +88,14 @@ export default function Admin() {
       currency: 'INR',
       minimumFractionDigits: 2
     }).format(amount)
+  }
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    })
   }
 
   if (loading) {
@@ -93,12 +126,12 @@ export default function Admin() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <h3 className="text-lg font-medium text-gray-500">Total Users</h3>
-            <p className="text-3xl font-bold">{stats.users}</p>
+            <p className="text-3xl font-bold">{stats.totalUsers}</p>
             <p className="text-sm text-gray-500 mt-1">Registered accounts</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <h3 className="text-lg font-medium text-gray-500">Total Bookings</h3>
-            <p className="text-3xl font-bold">{stats.bookings}</p>
+            <p className="text-3xl font-bold">{stats.totalBookings}</p>
             <p className="text-sm text-gray-500 mt-1">All-time bookings</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
@@ -108,7 +141,7 @@ export default function Admin() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <h3 className="text-lg font-medium text-gray-500">Total Revenue</h3>
-            <p className="text-3xl font-bold">{formatCurrency(stats.revenue)}</p>
+            <p className="text-3xl font-bold">{formatCurrency(stats.totalRevenue)}</p>
             <p className="text-sm text-gray-500 mt-1">All-time earnings</p>
           </div>
         </div>
@@ -175,21 +208,36 @@ export default function Admin() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {stats.recentBookings.map(booking => (
-                        <tr key={booking._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => navigate(`/admin/bookings`)}>
+                        <tr 
+                          key={booking._id} 
+                          className="hover:bg-gray-50 cursor-pointer" 
+                          onClick={() => navigate(`/admin/bookings/${booking._id}`)}
+                        >
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{booking.serviceType?.name}</div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {booking.serviceType?.name || 'N/A'}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              ₹{booking.serviceType?.price?.toFixed(2) || '0.00'}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">
+                              {booking.user?.name || 'N/A'}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {booking.user?.email || 'N/A'}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {booking.user?.name}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {new Date(booking.scheduledDate).toLocaleDateString()}
+                            {formatDate(booking.scheduledDate)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 py-1 text-xs rounded-full ${
                               booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
                               booking.status === 'Approved' ? 'bg-green-100 text-green-800' :
-                              'bg-blue-100 text-blue-800'
+                              booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                              'bg-gray-100 text-gray-800'
                             }`}>
                               {booking.status}
                             </span>

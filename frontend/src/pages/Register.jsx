@@ -26,7 +26,7 @@ export default function Register() {
       const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.'
       setError(errorMessage)
       toast.error(errorMessage)
-      console.error('Registration error:', err.response?.data)
+      // console.error('Registration error:', err.response?.data)
     }
   }
 

@@ -8,9 +8,9 @@ export default function Home() {
 
   return (
     <div className="text-center px-4 py-8 md:py-12">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-        Welcome to Car Service Center
-      </h1>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+        Welcome to BAJDOLIYA WORKSHOP
+      </h2>
       <p className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
         Professional car maintenance and repair services with certified mechanics and competitive pricing.
       </p>
