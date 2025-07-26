@@ -9,7 +9,6 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -28,14 +27,12 @@ export default function Navbar() {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
-  // Common links for both desktop and mobile
   const commonLinks = [
     { path: "/", name: "Home" },
     { path: "/about", name: "About" },
     { path: "/contact", name: "Contact" }
   ]
 
-  // User specific links
   const userLinks = user ? (
     user.isAdmin ? (
       [{ path: "/admin", name: "Admin-Dashboard" },
@@ -45,6 +42,7 @@ export default function Navbar() {
       ]
     ) : (
       [
+        { path: "/services", name: "Services" },
         { path: "/dashboard", name: "Dashboard" },
         { path: "/bookings", name: "My Bookings" },
         { path: "/cart", name: "Cart" }
@@ -55,34 +53,22 @@ export default function Navbar() {
   return (
     <nav className={`bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-3'}`}>
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
-          {/* Logo/Brand */}
-          <div className="flex items-center space-x-2 md:space-x-4">
-            <Link to="/" className="flex items-center space-x-2 focus:outline-none">
-              <img 
-                src={logo} 
-                alt="Logo" 
-                className="navbar-logo h-14 md:h-20 w-auto object-contain" 
-              />
-              <span className="navbar-brand text-sm md:text-xl font-semibold text-gray-800 whitespace-nowrap">
-                BAJDOLIYA WORKSHOP
-              </span>
-            </Link>
-          </div>
+        <div className="flex flex-wrap justify-between items-center">
+          {/* Logo and Brand */}
+          <Link to="/" className="flex items-center space-x-2 md:space-x-4 max-w-full overflow-hidden">
+            <img 
+              src={logo} 
+              alt="Logo" 
+              className="navbar-logo h-12 sm:h-14 md:h-16 lg:h-20 w-auto object-contain"
+            />
+            <span className="navbar-brand text-base sm:text-lg md:text-xl font-semibold text-gray-800 truncate">
+              BAJDOLIYA WORKSHOP
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            {commonLinks.map((link) => (
-              <Link 
-                key={link.path}
-                to={link.path}
-                className="text-gray-700 hover:text-blue-600 px-2 py-1 rounded-md font-medium"
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            {userLinks.map((link) => (
+          <div className="hidden md:flex flex-wrap items-center gap-2 lg:gap-4">
+            {[...commonLinks, ...userLinks].map((link) => (
               <Link 
                 key={link.path}
                 to={link.path}
@@ -132,18 +118,7 @@ export default function Navbar() {
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="mobile-menu md:hidden bg-white pt-2 pb-4 space-y-2 shadow-lg rounded-b-lg">
-            {commonLinks.map((link) => (
-              <Link 
-                key={link.path}
-                to={link.path}
-                className="block px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            {userLinks.map((link) => (
+            {[...commonLinks, ...userLinks].map((link) => (
               <Link 
                 key={link.path}
                 to={link.path}
