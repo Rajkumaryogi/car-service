@@ -157,3 +157,18 @@ export const addService = async (serviceData) => {
   );
   return response.data;
 };
+
+export const deleteService = async (serviceId) => {
+  try {
+    const token = getAdminToken()
+    const response = await axios.delete(`${API_URL}/api/admin/services/${serviceId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data
+  } catch (err) {
+    console.error('Error deleting service:', err)
+    throw err
+  }
+}
