@@ -19,7 +19,7 @@ export default function AdminNavbar() {
   const handleLogout = async () => {
     try {
       await logout()
-      navigate('/admin-login')
+      navigate('/')
     } catch (err) {
       console.error('Logout error:', err)
     }

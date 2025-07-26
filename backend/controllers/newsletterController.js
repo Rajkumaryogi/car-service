@@ -65,7 +65,7 @@ exports.subscribe = async (req, res) => {
 };
 
 async function sendVerificationEmail(subscriber) {
-    const verificationUrl = `${process.env.BASE_URL}/api/newsletter/verify?token=${subscriber.verificationToken}`;
+    const verificationUrl = `${process.env.BASE_URL}/api/newsletter/verify/${subscriber.verificationToken}`;
     
     const mailOptions = {
         from: `"${process.env.EMAIL_SENDER_NAME}" <${process.env.EMAIL_USER}>`,
@@ -77,7 +77,7 @@ async function sendVerificationEmail(subscriber) {
                 <p>Please click <a href="${verificationUrl}">here</a> to confirm your subscription.</p>
                 <p>If you didn't request this, please ignore this email.</p>
                 <p style="margin-top: 30px; color: #777;">
-                    <small>Best regards Yogi-Car_Services </small>
+                    <small>Best regards BAJDOLIYA WORKSHOP </small>
                 </p>
             </div>
         `
@@ -88,7 +88,7 @@ async function sendVerificationEmail(subscriber) {
 
 exports.verify = async (req, res) => {
     try {
-        const { token } = req.query;
+        const { token } = req.params;
         
         const subscriber = await Subscriber.findOne({ 
             verificationToken: token,

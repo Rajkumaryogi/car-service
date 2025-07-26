@@ -30,7 +30,8 @@ export default function Navbar() {
   const commonLinks = [
     { path: "/", name: "Home" },
     { path: "/about", name: "About" },
-    { path: "/contact", name: "Contact" }
+    { path: "/contact", name: "Contact" },
+    { path: "/services", name: "Services" },
   ]
 
   const userLinks = user ? (
@@ -42,7 +43,7 @@ export default function Navbar() {
       ]
     ) : (
       [
-        { path: "/services", name: "Services" },
+        { path: "/services", name: "Book Service" },
         { path: "/dashboard", name: "Dashboard" },
         { path: "/bookings", name: "My Bookings" },
         { path: "/cart", name: "Cart" }

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { useAuth } from '../contexts/AuthContext'
 import * as bookingService from '../services/booking'
 import * as cartService from '../services/cart'
 import { toast } from 'react-toastify'
 import ServiceCard from '../components/services/ServiceCard'
-import { FaCar, FaCalendarAlt, FaTools, FaSpinner } from 'react-icons/fa'
+import { FaCar, FaCalendarAlt, FaTools, FaSpinner, FaShoppingCart } from 'react-icons/fa'
 
 export default function Services() {
   const { user } = useAuth()
@@ -97,40 +98,64 @@ export default function Services() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="container mx-auto p-4 min-h-screen flex items-center justify-center"
+      >
         <div className="flex flex-col items-center">
           <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4" />
-          <p className="text-lg">Loading services...</p>
+          <p className="text-lg text-gray-600">Loading services...</p>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold flex items-center">
-          <FaTools className="mr-2 text-blue-600" />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="container mx-auto px-4 py-8"
+    >
+      {/* Header Section */}
+      <motion.div 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-8"
+      >
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 flex items-center justify-center">
+          <FaTools className="mr-3 text-blue-600" />
           Our Services
         </h1>
-      </div>
+        <p className="mt-2 text-lg text-gray-600">
+          Comprehensive automotive solutions for all your needs
+        </p>
+      </motion.div>
 
+      {/* Booking Form */}
       {user && (
-        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 sm:mb-8">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-100"
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
             <FaCalendarAlt className="mr-2 text-blue-600" />
             Book a Service
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-2 flex items-center">
-                <FaCar className="mr-2" />
+                <FaCar className="mr-2 text-blue-500" />
                 Select Car
               </label>
               <select 
                 value={selectedCar}
                 onChange={(e) => setSelectedCar(e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={isBooking || isAddingToCart}
               >
                 <option value="">Select Car</option>
@@ -143,44 +168,71 @@ export default function Services() {
             </div>
             <div>
               <label className="block text-gray-700 mb-2 flex items-center">
-                <FaCalendarAlt className="mr-2" />
+                <FaCalendarAlt className="mr-2 text-blue-500" />
                 Select Date & Time
               </label>
               <input
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min={new Date().toISOString().slice(0, 16)}
                 disabled={isBooking || isAddingToCart}
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
+      {/* Services Grid */}
       {services.length === 0 ? (
-        <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md text-center">
-          <h2 className="text-xl font-semibold mb-4">No Services Available</h2>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white p-8 rounded-xl shadow-md text-center border border-gray-100"
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">No Services Available</h2>
           <p className="text-gray-600">Please check back later for our service offerings.</p>
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {services.map(service => (
-            <ServiceCard
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {services.map((service, index) => (
+            <motion.div
               key={service._id}
-              service={service}
-              selectedCar={selectedCar}
-              date={date}
-              onBookNow={handleBookNow}
-              onAddToCart={handleAddToCart}
-              isBooking={isBooking}
-              isAddingToCart={isAddingToCart}
-              activeService={activeService}
-            />
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 * index }}
+              whileHover={{ y: -5 }}
+            >
+              <ServiceCard
+                service={service}
+                selectedCar={selectedCar}
+                date={date}
+                onBookNow={handleBookNow}
+                onAddToCart={handleAddToCart}
+                isBooking={isBooking}
+                isAddingToCart={isAddingToCart}
+                activeService={activeService}
+              />
+            </motion.div>
           ))}
+        </motion.div>
+      )}
+
+      {/* Empty State for Mobile */}
+      {services.length === 0 && (
+        <div className="md:hidden bg-blue-50 p-4 rounded-lg mt-6 text-center">
+          <FaShoppingCart className="mx-auto text-3xl text-blue-600 mb-3" />
+          <h3 className="font-medium text-gray-800">No services available</h3>
+          <p className="text-sm text-gray-600 mt-1">Check back later for our latest offerings</p>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

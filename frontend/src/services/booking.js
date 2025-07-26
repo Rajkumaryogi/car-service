@@ -31,3 +31,15 @@ export const getUserBookings = async () => {
   });
   return response.data;
 };
+
+// api for newsletter subscribe
+export const subscribeNewsletter = async (email) => {
+  const response = await axios.post(`${API_URL}/api/newsletter/`, { email });
+  return response.data;
+  };
+
+//api for verify newsletter subscription
+export const verifyNewsletter = async (token) => {
+  const response = await axios.get(`${API_URL}/api/newsletter/verify/${token}`); 
+  return response.data;
+  };
