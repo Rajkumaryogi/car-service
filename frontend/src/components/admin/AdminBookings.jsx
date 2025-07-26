@@ -6,11 +6,22 @@ import * as adminService from '../../services/admin'
 import AdminNavbar from './AdminNavbar'
 import { toast } from 'react-toastify'
 import LoadingSpinner from '../common/LoadingSpinner'
+import {
+  FaCalendarAlt,
+  FaUserShield,
+  FaFilter,
+  FaTools,
+  FaUser,
+  FaCar,
+  FaClock,
+  FaInfoCircle,
+  FaTable
+} from 'react-icons/fa'
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('all') // 'all', 'pending', 'approved', 'completed'
+  const [filter, setFilter] = useState('all')
   const { user } = useAuth()
   const socket = useSocket()
   const navigate = useNavigate()
@@ -68,10 +79,10 @@ export default function AdminBookings() {
   })
 
   const statusOptions = [
-    { value: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'Approved', color: 'bg-green-100 text-green-800' },
-    { value: 'Completed', color: 'bg-blue-100 text-blue-800' },
-    { value: 'Cancelled', color: 'bg-red-100 text-red-800' }
+    { value: 'Pending', color: 'bg-yellow-100 text-yellow-800', icon: '⏳' },
+    { value: 'Approved', color: 'bg-green-100 text-green-800', icon: '✓' },
+    { value: 'Completed', color: 'bg-blue-100 text-blue-800', icon: '✔️' },
+    { value: 'Cancelled', color: 'bg-red-100 text-red-800', icon: '✗' }
   ]
 
   if (loading) {
@@ -89,99 +100,205 @@ export default function AdminBookings() {
     <div className="min-h-screen bg-gray-100">
       <AdminNavbar />
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-          <h1 className="text-2xl font-bold">Booking Management</h1>
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <div className="flex items-center gap-3">
+            <FaCalendarAlt className="text-2xl text-blue-600" />
+            <h1 className="text-2xl font-bold">Booking Management</h1>
+          </div>
           
           <div className="flex items-center gap-4">
             {user?.email === 'rajyogi1811@gmail.com' && (
-              <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
+              <span className="flex items-center gap-2 bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
+                <FaUserShield />
                 Super Admin
               </span>
             )}
             
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="border rounded px-3 py-1 text-sm"
-            >
-              <option value="all">All Bookings</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaFilter className="text-gray-400" />
+              </div>
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              >
+                <option value="all">All Booking</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        {/* Desktop Table */}
+        <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Car Details</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                    <FaTools />
+                    Service
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                    <FaUser />
+                    User
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                    <FaCar />
+                    Vehicle
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                    <FaClock />
+                    Date & Time
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredBookings.length > 0 ? (
-                  filteredBookings.map(booking => (
-                    <tr key={booking._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">{booking.serviceType?.name}</div>
-                        <div className="text-sm text-gray-500">₹{booking.serviceType?.price?.toFixed(2)}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">{booking.user?.name}</div>
-                        <div className="text-sm text-gray-500">{booking.user?.email}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">{booking.car?.model}</div>
-                        <div className="text-sm text-gray-500">{booking.car?.licensePlate}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(booking.scheduledDate).toLocaleString('en-IN', {
-                          weekday: 'short',
+                {filteredBookings.map(booking => (
+                  <tr key={booking._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-blue-100 p-2 rounded-full">
+                          <FaTools className="text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900">{booking.serviceType?.name}</div>
+                          <div className="text-sm text-gray-500">₹{booking.serviceType?.price?.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-gray-900">{booking.user?.name}</div>
+                      <div className="text-sm text-gray-500">{booking.user?.phone}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-gray-900">{booking.car?.model}</div>
+                      <div className="text-sm text-gray-500">{booking.car?.licensePlate}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {new Date(booking.scheduledDate).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'short',
-                          year: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {new Date(booking.scheduledDate).toLocaleTimeString('en-IN', {
                           hour: '2-digit',
                           minute: '2-digit'
                         })}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <select
-                          value={booking.status}
-                          onChange={(e) => updateBookingStatus(booking._id, e.target.value)}
-                          className={`border rounded px-2 py-1 text-sm ${
-                            statusOptions.find(opt => opt.value === booking.status)?.color || ''
-                          }`}
-                        >
-                          {statusOptions.map(option => (
-                            <option 
-                              key={option.value} 
-                              value={option.value}
-                              className={option.color}
-                            >
-                              {option.value}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                      No bookings found
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <select
+                        value={booking.status}
+                        onChange={(e) => updateBookingStatus(booking._id, e.target.value)}
+                        className={`border rounded-lg px-3 py-1 text-sm ${
+                          statusOptions.find(opt => opt.value === booking.status)?.color || ''
+                        }`}
+                      >
+                        {statusOptions.map(option => (
+                          <option 
+                            key={option.value} 
+                            value={option.value}
+                            className={option.color}
+                          >
+                            {option.icon} {option.value}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                   </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {filteredBookings.length > 0 ? (
+            filteredBookings.map(booking => (
+              <div key={booking._id} className="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <FaTools className="text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{booking.serviceType?.name}</h3>
+                      <p className="text-sm text-gray-600">₹{booking.serviceType?.price?.toFixed(2)}</p>
+                    </div>
+                  </div>
+                  <select
+                    value={booking.status}
+                    onChange={(e) => updateBookingStatus(booking._id, e.target.value)}
+                    className={`text-xs px-2 py-1 rounded ${
+                      statusOptions.find(opt => opt.value === booking.status)?.color || ''
+                    }`}
+                  >
+                    {statusOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.icon} {option.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-3 mt-3">
+                  <div className="flex items-center gap-3">
+                    <FaUser className="text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium">{booking.user?.name}</p>
+                      <p className="text-xs text-gray-500">{booking.user?.phone}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <FaCar className="text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium">{booking.car?.model}</p>
+                      <p className="text-xs text-gray-500">{booking.car?.licensePlate}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <FaClock className="text-gray-400" />
+                    <div>
+                      <p className="text-sm">
+                        {new Date(booking.scheduledDate).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(booking.scheduledDate).toLocaleTimeString('en-IN', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+              <FaTable className="mx-auto text-4xl text-gray-300 mb-4" />
+              <h3 className="text-lg font-medium text-gray-700 mb-2">No Bookings Found</h3>
+              <p className="text-gray-500">There are currently no bookings matching your filter.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
