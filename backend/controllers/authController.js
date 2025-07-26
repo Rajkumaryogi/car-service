@@ -6,9 +6,14 @@ const sendEmail = require('../utils/emailSender');
 exports.register = async (req, res) => {
   try {
     const user = new User(req.body);
+    //if duplicate user is found, return error
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists : login please' });
+      }
     await user.save();
     const token = jwt.sign({ id: user._id }, secret, { expiresIn });
-    res.status(201).send({ user, token });
+    res.status(201).send({ user, token }).json({message: 'Register Successfully'});
   } catch (err) {
     res.status(400).send(err);
   }
