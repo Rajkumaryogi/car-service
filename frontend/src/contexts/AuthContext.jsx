@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     const newUser = await authService.register(userData)
     setUser(newUser)
-    navigate('/dashboard')
+    // navigate('/dashboard')
   }
 
   const logout = async () => {
