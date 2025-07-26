@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: car-service-backend
+    env: node
+    region: oregon  # or frankfurt, singapore, etc.
+    plan: free
+
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 10000  # or whatever your backend uses
+      # - key: MONGODB_URI
+      #   value: your_mongodb_connection_string_here
+
+    autoDeploy: true
+    branch: main
