@@ -74,9 +74,9 @@ exports.getAllUsers = async (req, res) => {
 //for user details
 exports.getUserDetails = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId)
-    .select('-password') // Exclude password
-    .populate('cars');
+    const user = await User.findById(req.params.id)
+      .select("-password") // Exclude password
+      .populate("cars");
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
@@ -123,6 +123,17 @@ exports.addService = async (req, res) => {
     const service = new ServiceOffering(req.body);
     await service.save();
     res.status(201).send(service);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+// for the delete of the service
+
+exports.deleteService = async (req, res) => {
+  try {
+    await ServiceOffering.findByIdAndDelete(req.params.id);
+    res.status(200).send({ message: "Service deleted successfully" });
   } catch (err) {
     res.status(400).send(err);
   }

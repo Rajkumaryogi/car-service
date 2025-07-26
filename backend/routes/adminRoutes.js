@@ -13,6 +13,7 @@ router.get('/services', adminMiddleware, adminController.getAllServices);
 router.get('/users', adminMiddleware, adminController.getAllUsers);
 router.get('/bookings', adminMiddleware, adminController.getAllBookings);
 router.patch('/bookings/:id', adminMiddleware, adminController.updateBookingStatus);
-router.get('/user/:userId', adminMiddleware, adminController.getUserDetails);
+router.delete('/services/:id', adminMiddleware, adminController.deleteService);
+router.get('/user/:id', adminMiddleware, adminController.getUserDetails);
 
 module.exports = router;
