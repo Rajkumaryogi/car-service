@@ -39,3 +39,7 @@ export const getCurrentUser = async () => {
 export const forgotPassword = async (email) => {
   await axios.post(`${API_URL}/api/auth/forgot-password`, { email })
 }
+// reset password
+export const resetPassword = async (token, newPassword) => {
+  await axios.patch(`${API_URL}/api/auth/reset-password/${token}`, { password: newPassword })
+  }
