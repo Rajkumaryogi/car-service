@@ -46,14 +46,15 @@ export const AuthProvider = ({ children }) => {
 }, []);
 
   const login = async (email, password) => {
-    try {
+  try {
     const userData = await authService.login(email, password)
-    setUser({...userData, isUser:true});
-    navigate('/dashboard');
-    }catch(err){
-      console.error('Login error:', err);
-    }
+    setUser({ ...userData, isUser: true });
+    return userData;
+  } catch (err) {
+    console.error('Login error:', err);
+    throw err; // ✅ Add this line!
   }
+}
 
   const adminLogin = async (email, password) => {
   try {
