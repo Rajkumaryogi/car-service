@@ -16,6 +16,8 @@ import Footer from "./components/common/Footer";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AdminRoute from "./components/auth/AdminRoute";
 import Login from "./pages/Login";
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Register from "./pages/Register";
 import AdminLogin from "./pages/AdminLogin";
 import AdminUserDetails from "./components/admin/AdminUserDetails";
@@ -58,6 +60,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+        
           <Route path="/register" element={<Register />} />
             <Route path="/services" element={<Services />} />
             <Route path="/admin-login" element={<AdminLogin />} />
