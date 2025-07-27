@@ -33,7 +33,7 @@ const io = socketio(server);
 
 // Enhanced CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173','https://bajdoliya-workshop.vercel.app/','bajdoliya-workshop-8dbiv2bdn-rajkumar-yogis-projects.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
