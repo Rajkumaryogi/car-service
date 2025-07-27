@@ -125,6 +125,13 @@ export default function Bookings() {
                         Service Details
                       </h4>
                       <ul className="space-y-2">
+                      <li className="flex justify-between">
+                          <span className="text-gray-600 flex items-center gap-2">
+                            <FaClock className="text-sm" />
+                            Service Id
+                          </span>
+                          <span>{booking.serviceType || 'N/A'}</span>
+                        </li>
                         <li className="flex justify-between">
                           <span className="text-gray-600 flex items-center gap-2">
                             <FaClock className="text-sm" />
