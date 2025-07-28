@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const http = require('http');
 const socketio = require('socket.io');
+const cookieParser = require('cookie-parser');
 
 
 // Custom request logger middleware
@@ -26,6 +27,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const setupSocket = require('./utils/socket');
+// const razorpayRoutes = require('./routes/razorpayRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -33,7 +35,7 @@ const io = socketio(server);
 
 // Enhanced CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:5173','https://bajdoliya-workshop.vercel.app/','bajdoliya-workshop-8dbiv2bdn-rajkumar-yogis-projects.vercel.app'],
+  origin: [ 'http://localhost:5173','https://car-service-silk-nu.vercel.app','https://car-service-git-main-rajkumar-yogis-projects.vercel.app','https://car-service-fouw3jqw6-rajkumar-yogis-projects.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -43,6 +45,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(requestLogger);
+app.use(cookieParser());
 
 // Database Connection
 connectDB();
@@ -57,6 +60,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+// app.use('/api/razorpay', razorpayRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
