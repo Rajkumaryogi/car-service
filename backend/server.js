@@ -24,6 +24,8 @@ const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const sendMessageRoutes = require('./routes/sendMessageRoute');
+
 
 const app = express();
 app.set('trust proxy', 1); // trust first proxy (e.g., Railway)
@@ -33,7 +35,7 @@ app.use(helmet());
 app.use(compression());
 app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
-
+app.use(requestLogger);
 // Rate Limiting
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
@@ -62,6 +64,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/send-message', sendMessageRoutes);
 
 // Error Handling
 app.use((err, req, res, next) => {

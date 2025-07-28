@@ -12,7 +12,7 @@ export default function Register() {
 
   useEffect(() => {
     if (user && !loading) {
-      toast.info('Please logout to register a new account')
+      // toast.info('Please logout to register a new account')
       navigate('/dashboard')
     }
   }, [user, loading, navigate])
