@@ -1,7 +1,7 @@
 import { useAuth } from '../../contexts/AuthContext'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // <-- Add this import
+import { useNavigate } from 'react-router-dom'
 import { FaClock, FaRupeeSign, FaShoppingCart, FaBookOpen, FaSignInAlt } from 'react-icons/fa'
 import { GiCarWheel } from 'react-icons/gi'
 
