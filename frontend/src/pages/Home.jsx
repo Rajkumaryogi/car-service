@@ -191,16 +191,6 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* Services Section - Full Width on Mobile */}
-      <motion.section 
-        className="py-12 bg-gray-50"
-        variants={fadeIn}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Services />
-        </div>
-      </motion.section>
-
       {/* About Section - Stacked on Mobile */}
       <motion.section 
         className="py-12 bg-white"

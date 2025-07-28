@@ -6,7 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://car-service-production.up.railway.app',
+        // target: 'https://car-service-production.up.railway.app',
+        target: 'http://localhost:5001',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')

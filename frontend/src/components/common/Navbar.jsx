@@ -31,7 +31,7 @@ export default function Navbar() {
     { path: "/", name: "Home" },
     { path: "/about", name: "About" },
     { path: "/contact", name: "Contact" },
-    { path: "/services", name: "Services" },
+    { path: "/services", name: "Book Services" },
   ]
 
   const userLinks = user ? (
@@ -43,7 +43,6 @@ export default function Navbar() {
       ]
     ) : (
       [
-        { path: "/services", name: "Book Service" },
         { path: "/dashboard", name: "Dashboard" },
         { path: "/bookings", name: "My Bookings" },
         { path: "/cart", name: "Cart" }
