@@ -26,6 +26,7 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
+app.set('trust proxy', 1); // trust first proxy (e.g., Railway)
 
 // Security & Performance Middleware
 app.use(helmet());
