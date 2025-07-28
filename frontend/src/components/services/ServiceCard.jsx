@@ -1,6 +1,7 @@
 import { useAuth } from '../../contexts/AuthContext'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // <-- Add this import
 import { FaClock, FaRupeeSign, FaShoppingCart, FaBookOpen, FaSignInAlt } from 'react-icons/fa'
 import { GiCarWheel } from 'react-icons/gi'
 
@@ -15,11 +16,16 @@ export default function ServiceCard({
   activeService
 }) {
   const { user } = useAuth()
+  const navigate = useNavigate() // <-- Initialize useNavigate
   const [isHovered, setIsHovered] = useState(false)
 
   const durationText = service.duration >= 60 
     ? `${Math.floor(service.duration / 60)}h ${service.duration % 60}m`
     : `${service.duration}m`
+
+  const handleLoginRedirect = () => {
+    navigate('/login') // <-- Redirect to login page
+  }
 
   return (
     <div 
@@ -94,8 +100,8 @@ export default function ServiceCard({
           </div>
         ) : (
           <button 
-            className="w-full py-2 px-3 rounded text-white bg-blue-400 cursor-not-allowed flex items-center justify-center"
-            disabled
+            onClick={handleLoginRedirect} // <-- Add click handler
+            className="w-full py-2 px-3 rounded text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
             <FaSignInAlt className="mr-2" />
             Login to Book
