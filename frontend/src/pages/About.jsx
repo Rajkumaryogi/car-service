@@ -146,7 +146,7 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <img
-              src="https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+              src="https://miro.medium.com/v2/resize:fit:4320/1*JktzC9GrA_l4yz0cCy8a5Q.jpeg"
               alt="Workshop interior"
               className="w-full h-auto object-cover"
             />
