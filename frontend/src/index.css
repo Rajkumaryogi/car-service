@@ -2,13 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom animations for mobile menu */
+/* ===== Enhanced Mobile Support ===== */
+@layer utilities {
+  /* iOS viewport height fix */
+  .min-h-screen-ios {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: fill-available;
+  }
+
+  /* Safari tap highlight color */
+  .tap-transparent {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent text size adjustment */
+  .text-size-adjust-none {
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+  }
+}
+
+/* ===== Animations & Transitions ===== */
 @keyframes slideDown {
-  from {
+  0% {
     opacity: 0;
     transform: translateY(-20px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -16,26 +37,73 @@
 
 .mobile-menu {
   animation: slideDown 0.3s ease-out forwards;
+  will-change: transform, opacity; /* Better performance */
 }
 
-/* Smooth transitions for all links */
-a, button {
-  transition: all 0.2s ease;
+/* Smooth transitions */
+a, button, input, select, textarea {
+  @apply transition-all duration-200 ease-in-out tap-transparent;
 }
 
-/* Focus styles for accessibility */
-a:focus, button:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
+/* ===== Focus & Active States ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  @apply outline outline-2 outline-blue-500 outline-offset-2 ring-0;
 }
 
-/* Mobile logo scaling */
+/* Active state for buttons */
+button:active {
+  transform: scale(0.98);
+}
+
+/* ===== iOS-Specific Fixes ===== */
+@supports (-webkit-touch-callout: none) {
+  /* Force 16px font on inputs to prevent zoom */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    @apply text-base !important;
+  }
+
+  /* Safari input shadow fix */
+  input, textarea {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+}
+
+/* ===== Responsive Adjustments ===== */
 @media (max-width: 767px) {
   .navbar-logo {
     height: 3.5rem;
   }
+
   .navbar-brand {
-    font-size: 1rem;
+    @apply text-sm;
+  }
+
+  /* Prevent layout shift on mobile */
+  html {
+    @apply overflow-x-hidden;
+  }
+  body {
+    @apply overflow-x-hidden text-size-adjust-none;
   }
 }
 
+/* ===== Safari Visual Fixes ===== */
+/* Hide arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Fix for Safari backdrop filters */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+}
