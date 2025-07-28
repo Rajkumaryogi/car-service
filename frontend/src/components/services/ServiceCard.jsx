@@ -24,7 +24,7 @@ export default function ServiceCard({
     : `${service.duration}m`
 
   const handleLoginRedirect = () => {
-    navigate('/login') // <-- Redirect to login page
+    navigate('/login') 
   }
 
   return (
@@ -100,7 +100,7 @@ export default function ServiceCard({
           </div>
         ) : (
           <button 
-            onClick={handleLoginRedirect} // <-- Add click handler
+            onClick={handleLoginRedirect} 
             className="w-full py-2 px-3 rounded text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
             <FaSignInAlt className="mr-2" />
