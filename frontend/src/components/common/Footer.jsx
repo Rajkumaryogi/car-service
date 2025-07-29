@@ -11,7 +11,6 @@ import {
   FaTools,
   FaShieldAlt,
 } from "react-icons/fa";
-
 import { useState } from "react";
 import { subscribeNewsletter } from "../../services/booking";
 
@@ -58,31 +57,35 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-50 text-gray-800 pt-8 pb-6 border-t border-gray-200">
+    <footer className="bg-gray-50 text-gray-800 pt-12 pb-8 border-t border-gray-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* About Section */}
           <div className="mb-6">
             <div className="flex items-center mb-4">
-              <FaCar className="text-2xl text-blue-600 mr-2" />
-              <h3 className="text-xl font-bold">BAJDOLIYA WORKSHOP</h3>
+              <img 
+                src="https://gomechprod.blob.core.windows.net/gomech-retail/gomechanic_assets/category_icons_new/xxxhdpi/1.png"
+                alt="Bajdoliya Workshop Logo"
+                className="w-10 h-10 mr-3"
+              />
+              <h3 className="text-xl font-bold text-gray-900">BAJDOLIYA WORKSHOP</h3>
             </div>
             <p className="text-gray-600 mb-4 text-sm sm:text-base">
               Your trusted partner for premium car services. We deliver
               excellence with every repair and maintenance service.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaFacebook className="text-lg sm:text-xl" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaTwitter className="text-lg sm:text-xl" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaInstagram className="text-lg sm:text-xl" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaLinkedin className="text-lg sm:text-xl" />
               </a>
             </div>
@@ -90,28 +93,28 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
+            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2 text-gray-900">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="/services" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center text-sm sm:text-base">
-                  <FaTools className="mr-2 text-blue-600 flex-shrink-0" /> Services
+                <a href="/services" className="text-gray-600 hover:text-red-600 transition-colors flex items-center text-sm sm:text-base">
+                  <FaTools className="mr-2 text-red-600 flex-shrink-0" /> Services
                 </a>
               </li>
               <li>
-                <a href="/login" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center text-sm sm:text-base">
-                  <FaCar className="mr-2 text-blue-600 flex-shrink-0" /> Book Appointment
+                <a href="/login" className="text-gray-600 hover:text-red-600 transition-colors flex items-center text-sm sm:text-base">
+                  <FaCar className="mr-2 text-red-600 flex-shrink-0" /> Book Appointment
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center text-sm sm:text-base">
-                  <FaShieldAlt className="mr-2 text-blue-600 flex-shrink-0" /> Warranty
+                <a href="#" className="text-gray-600 hover:text-red-600 transition-colors flex items-center text-sm sm:text-base">
+                  <FaShieldAlt className="mr-2 text-red-600 flex-shrink-0" /> Warranty
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center text-sm sm:text-base">
-                  <FaTools className="mr-2 text-blue-600 flex-shrink-0" /> Maintenance Packages
+                <a href="#" className="text-gray-600 hover:text-red-600 transition-colors flex items-center text-sm sm:text-base">
+                  <FaTools className="mr-2 text-red-600 flex-shrink-0" /> Maintenance Packages
                 </a>
               </li>
             </ul>
@@ -119,40 +122,40 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
+            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2 text-gray-900">
               Contact Us
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <FaPhone className="text-blue-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
+                <FaPhone className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  +1 (555) 123-4567
+                  +91 98765 43210
                 </span>
               </li>
               <li className="flex items-start">
-                <FaEnvelope className="text-blue-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
+                <FaEnvelope className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  contact@premiumautocare.com
+                  contact@bajdoliya.com
                 </span>
               </li>
               <li className="flex items-start">
-                <FaMapMarkerAlt className="text-blue-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
+                <FaMapMarkerAlt className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  123 Auto Street, Service City, SC 12345
+                  123 Auto Street, Workshop City, WC 12345
                 </span>
               </li>
               <li className="flex items-start">
-                <FaClock className="text-blue-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
+                <FaClock className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  Mon-Sat: 8:00 AM - 6:00 PM
+                  Mon-Sat: 8:00 AM - 8:00 PM
                 </span>
               </li>
             </ul>
           </div>
 
-          {/* Newsletter - Enhanced for mobile */}
+          {/* Newsletter */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">
+            <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2 text-gray-900">
               Newsletter
             </h3>
             <p className="text-gray-600 mb-3 text-sm sm:text-base">
@@ -163,7 +166,7 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Your email address"
-                  className="w-full bg-white border border-gray-300 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                  className="w-full bg-white border border-gray-300 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -172,7 +175,7 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                className={`w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                   isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
@@ -204,7 +207,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-300 my-4 sm:my-6"></div>
+        <div className="border-t border-gray-300 my-6"></div>
 
         {/* Bottom Footer */}
         <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
@@ -217,7 +220,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/rajkumaryogi-jnu"
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-1 text-blue-600 hover:underline"
+              className="ml-1 text-red-600 hover:underline"
             >
               YOGI
             </a>
@@ -226,7 +229,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/yuvraj-choudhary-921087246/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-red-600 hover:underline"
             >
               YUVI
             </a>
