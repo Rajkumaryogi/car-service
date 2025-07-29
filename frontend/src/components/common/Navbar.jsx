@@ -43,7 +43,7 @@ export default function Navbar() {
       { path: "/admin/services", name: "Services", icon: <FaTools className="mr-2" /> }
     ] : [
       { path: "/dashboard", name: "Dashboard", icon: <FaUserCog className="mr-2" /> },
-      { path: "/bookings", name: "Bookings", icon: <FaCalendarAlt className="mr-2" /> },
+      { path: "/bookings", name: "My Bookings", icon: <FaCalendarAlt className="mr-2" /> },
       { path: "/cart", name: "Cart", icon: <FaShoppingCart className="mr-2" /> }
     ]
   ) : []
