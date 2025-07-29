@@ -1,100 +1,122 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { useAuth } from '../contexts/AuthContext'
-import * as bookingService from '../services/booking'
-import * as cartService from '../services/cart'
-import { toast } from 'react-toastify'
-import ServiceCard from '../components/services/ServiceCard'
-import { FaCar, FaCalendarAlt, FaTools, FaSpinner, FaShoppingCart } from 'react-icons/fa'
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
+import * as bookingService from '../services/booking';
+import * as cartService from '../services/cart';
+import { toast } from 'react-toastify';
+import ServiceCard from '../components/services/ServiceCard';
+import { 
+  FaCar, 
+  FaCalendarAlt, 
+  FaSpinner, 
+  FaShoppingCart,
+  FaOilCan,
+  FaCarBattery,
+  FaCarCrash,
+  FaCarSide,
+  FaGasPump,
+  FaTint,
+  FaTools
+} from 'react-icons/fa';
+import { GiCarWheel, GiCarKey } from 'react-icons/gi';
 
 export default function Services() {
-  const { user } = useAuth()
-  const [services, setServices] = useState([])
-  const [selectedCar, setSelectedCar] = useState('')
-  const [date, setDate] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [isBooking, setIsBooking] = useState(false)
-  const [isAddingToCart, setIsAddingToCart] = useState(false)
-  const [activeService, setActiveService] = useState(null)
+  const { user } = useAuth();
+  const [services, setServices] = useState([]);
+  const [selectedCar, setSelectedCar] = useState('');
+  const [date, setDate] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isBooking, setIsBooking] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [activeService, setActiveService] = useState(null);
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const data = await bookingService.getServices()
-        setServices(data)
+        const data = await bookingService.getServices();
+        setServices(data);
       } catch (err) {
-        console.error('Error fetching services:', err)
-        toast.error('Failed to load services. Please try again later.')
+        console.error('Error fetching services:', err);
+        toast.error('Failed to load services. Please try again later.');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchServices()
-  }, [])
+    };
+    fetchServices();
+  }, []);
+
+  const getServiceIcon = (serviceType) => {
+    if (!serviceType) return <FaTools className="text-2xl" />;
+    
+    const type = serviceType.toLowerCase();
+    if (type.includes('oil')) return <FaOilCan className="text-2xl" />;
+    if (type.includes('battery')) return <FaCarBattery className="text-2xl" />;
+    if (type.includes('tire') || type.includes('tyre') || type.includes('wheel')) return <GiCarWheel className="text-2xl" />;
+    if (type.includes('wash')) return <FaTint className="text-2xl" />;
+    if (type.includes('fuel') || type.includes('gas')) return <FaGasPump className="text-2xl" />;
+    if (type.includes('general') || type.includes('service')) return <FaTools className="text-2xl" />;
+    return <FaCarSide className="text-2xl" />;
+  };
 
   const handleBookNow = async (serviceId) => {
     if (!user) {
-      toast.error('Please login to book services')
-      return
+      toast.error('Please login to book services');
+      return;
     }
     if (!selectedCar || !date) {
-      toast.error('Please select car and date')
-      return
+      toast.error('Please select car and date');
+      return;
     }
     
     try {
-      setIsBooking(true)
-      setActiveService(serviceId)
-      const service = services.find(s => s._id === serviceId)
+      setIsBooking(true);
+      setActiveService(serviceId);
+      const service = services.find(s => s._id === serviceId);
       
-      const booking = await bookingService.bookService({
+      await bookingService.bookService({
         serviceType: serviceId,
         car: {
           model: user.cars.find(c => c._id === selectedCar).model,
           licensePlate: user.cars.find(c => c._id === selectedCar).licensePlate
         },
         scheduledDate: date
-      })
+      });
       
-      toast.success(`${service.name} booked successfully!`)
-      setSelectedCar('')
-      setDate('')
+      toast.success(`${service.name} booked successfully!`);
+      setSelectedCar('');
+      setDate('');
     } catch (err) {
-      if (err?.status === 201) {
-        toast.success('Service booked successfully!')
-      } else {
-        const errorMessage = err?.message || 'Failed to book service'
-        toast.error(errorMessage)
-        console.error('Booking error:', err)
-      }
+      const errorMessage = err?.message || 'Failed to book service';
+      toast.error(errorMessage);
+      console.error('Booking error:', err);
     } finally {
-      setIsBooking(false)
-      setActiveService(null)
+      setIsBooking(false);
+      setActiveService(null);
     }
-  }
+  };
 
   const handleAddToCart = async (serviceId) => {
     if (!user) {
-      toast.error('Please login to add to cart')
-      return
+      toast.error('Please login to add to cart');
+      return;
     }
     
     try {
-      setIsAddingToCart(true)
-      setActiveService(serviceId)
-      const service = services.find(s => s._id === serviceId)
+      setIsAddingToCart(true);
+      setActiveService(serviceId);
+      const service = services.find(s => s._id === serviceId);
       
-      await cartService.addToCart(serviceId)
-      toast.success(`${service.name} added to cart!`)
+      await cartService.addToCart(serviceId);
+      toast.success(`${service.name} added to cart!`);
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Failed to add to cart'
-      toast.error(errorMessage)
-      console.error('Add to cart error:', err)
+      const errorMessage = err.response?.data?.message || 'Failed to add to cart';
+      toast.error(errorMessage);
+      console.error('Add to cart error:', err);
     } finally {
-      setIsAddingToCart(false)
-      setActiveService(null)
+      setIsAddingToCart(false);
+      setActiveService(null);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -104,11 +126,11 @@ export default function Services() {
         className="container mx-auto p-4 min-h-screen flex items-center justify-center"
       >
         <div className="flex flex-col items-center">
-          <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-red-600 mb-4" />
           <p className="text-lg text-gray-600">Loading services...</p>
         </div>
       </motion.div>
-    )
+    );
   }
 
   return (
@@ -123,14 +145,18 @@ export default function Services() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-8"
+        className="text-center mb-12"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 flex items-center justify-center">
-          <FaTools className="mr-3 text-blue-600" />
-          Our Services
+        <div className="flex items-center justify-center mb-4">
+          <div className="bg-red-600 p-4 rounded-full text-white shadow-lg">
+            <GiCarKey className="text-3xl" />
+          </div>
+        </div>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+          Our <span className="text-red-600">Premium</span> Services
         </h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Comprehensive automotive solutions for all your needs
+        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          Expert car care solutions with Bajdoliya's signature red carpet service
         </p>
       </motion.div>
 
@@ -140,22 +166,31 @@ export default function Services() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-100"
+          className="bg-white p-6 rounded-xl shadow-lg mb-10 border border-gray-200"
         >
-          <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-            <FaCalendarAlt className="mr-2 text-blue-600" />
-            Book a Service
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center mb-6">
+            <div className="bg-red-100 p-3 rounded-full mr-4 text-red-600">
+              <FaCalendarAlt className="text-xl" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Schedule Your Service
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-gray-700 mb-2 flex items-center">
-                <FaCar className="mr-2 text-blue-500" />
-                Select Car
+              <label className="block text-gray-700 mb-3 font-medium">
+                <div className="flex items-center">
+                  <div className="bg-red-100 p-2 rounded-full mr-3 text-red-600">
+                    <FaCarSide />
+                  </div>
+                  Select Your Vehicle
+                </div>
               </label>
               <select 
                 value={selectedCar}
                 onChange={(e) => setSelectedCar(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 disabled={isBooking || isAddingToCart}
               >
                 <option value="">Select Car</option>
@@ -166,16 +201,21 @@ export default function Services() {
                 ))}
               </select>
             </div>
+            
             <div>
-              <label className="block text-gray-700 mb-2 flex items-center">
-                <FaCalendarAlt className="mr-2 text-blue-500" />
-                Select Date & Time
+              <label className="block text-gray-700 mb-3 font-medium">
+                <div className="flex items-center">
+                  <div className="bg-red-100 p-2 rounded-full mr-3 text-red-600">
+                    <FaCalendarAlt />
+                  </div>
+                  Preferred Date & Time
+                </div>
               </label>
               <input
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 min={new Date().toISOString().slice(0, 16)}
                 disabled={isBooking || isAddingToCart}
               />
@@ -190,17 +230,26 @@ export default function Services() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-white p-8 rounded-xl shadow-md text-center border border-gray-100"
+          className="bg-white p-8 rounded-xl shadow-md text-center border border-gray-200"
         >
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">No Services Available</h2>
-          <p className="text-gray-600">Please check back later for our service offerings.</p>
+          <div className="bg-red-100 p-5 rounded-full inline-block mb-6">
+            <FaCarCrash className="text-4xl text-red-600" />
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Our Services Are Coming Soon</h2>
+          <p className="text-gray-600 mb-6">We're preparing something special for your vehicle</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Refresh Page
+          </button>
         </motion.div>
       ) : (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {services.map((service, index) => (
             <motion.div
@@ -216,23 +265,14 @@ export default function Services() {
                 date={date}
                 onBookNow={handleBookNow}
                 onAddToCart={handleAddToCart}
-                isBooking={isBooking}
-                isAddingToCart={isAddingToCart}
-                activeService={activeService}
+                isBooking={isBooking && activeService === service._id}
+                isAddingToCart={isAddingToCart && activeService === service._id}
+                icon={getServiceIcon(service.category || service.name)}
               />
             </motion.div>
           ))}
         </motion.div>
       )}
-
-      {/* Empty State for Mobile */}
-      {services.length === 0 && (
-        <div className="md:hidden bg-blue-50 p-4 rounded-lg mt-6 text-center">
-          <FaShoppingCart className="mx-auto text-3xl text-blue-600 mb-3" />
-          <h3 className="font-medium text-gray-800">No services available</h3>
-          <p className="text-sm text-gray-600 mt-1">Check back later for our latest offerings</p>
-        </div>
-      )}
     </motion.div>
-  )
+  );
 }
