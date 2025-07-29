@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaGithub } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaTools, FaCar, FaOilCan, FaWrench } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Contact = () => {
@@ -100,7 +100,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-red-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
@@ -112,13 +112,13 @@ const Contact = () => {
             variants={item}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
           >
-            Get In Touch
+            <span className="text-red-600">Contact</span> Our Workshop
           </motion.h2>
           <motion.p
             variants={item}
             className="text-xl text-gray-600 max-w-2xl mx-auto"
           >
-            Have a project in mind or want to collaborate? Drop me a message!
+            Need car service or have questions? Our team is ready to help!
           </motion.p>
         </motion.div>
 
@@ -126,12 +126,12 @@ const Contact = () => {
           {/* Contact Form */}
           <motion.div
             variants={item}
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
+            className="bg-white rounded-2xl shadow-xl overflow-hidden border-l-2 border-red-600"
           >
             <div className="p-8 sm:p-10">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <FaPaperPlane className="text-blue-500 mr-3" />
-                Send Me a Message
+                <FaTools className="text-red-600 mr-3" />
+                Service Inquiry Form
               </h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -145,7 +145,7 @@ const Contact = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-red-500 focus:border-transparent transition`}
                     placeholder="John Doe"
                   />
                   {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
@@ -161,7 +161,7 @@ const Contact = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-red-500 focus:border-transparent transition`}
                     placeholder="john@example.com"
                   />
                   {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -169,7 +169,7 @@ const Contact = () => {
 
                 <motion.div variants={item}>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Message
+                    Service Details
                   </label>
                   <textarea
                     id="message"
@@ -177,8 +177,8 @@ const Contact = () => {
                     rows="5"
                     value={formData.message}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
-                    placeholder="Hello, I'd like to talk about..."
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-red-500 focus:border-transparent transition`}
+                    placeholder="Describe your car service needs (model, issue, etc.)"
                   ></textarea>
                   {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
                 </motion.div>
@@ -189,7 +189,7 @@ const Contact = () => {
                     whileHover={hoverEffect}
                     whileTap={tapEffect}
                     disabled={isSubmitting}
-                    className={`w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+                    className={`w-full py-4 px-6 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center">
@@ -200,7 +200,10 @@ const Contact = () => {
                         Sending...
                       </span>
                     ) : (
-                      "Send Message"
+                      <span className="flex items-center justify-center">
+                        <FaWrench className="mr-2" />
+                        Request Service
+                      </span>
                     )}
                   </motion.button>
                 </motion.div>
@@ -233,11 +236,11 @@ const Contact = () => {
             {/* Google Map */}
             <motion.div
               variants={item}
-              className="h-64 sm:h-80 lg:h-96 rounded-2xl shadow-xl overflow-hidden"
+              className="h-64 sm:h-80 lg:h-96 rounded-2xl shadow-xl overflow-hidden border-l-2 border-red-600 hover:shadow-2xl transition-transform transform hover:scale-105"
               whileHover={{ scale: 1.01 }}
             >
               <iframe
-                title="Office Location"
+                title="Workshop Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.123456789012!2d75.7478112!3d26.8410987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5ea05c93e09%3A0x860a04daca91e807!2sBajdoliya%20Workshop%20(Foam%20Car%20Wash)!5e0!3m2!1sen!2sin!4v1712345678901!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
@@ -250,60 +253,67 @@ const Contact = () => {
             {/* Contact Information */}
             <motion.div
               variants={item}
-              className="bg-white p-8 rounded-2xl shadow-xl"
+              className="bg-white p-8 rounded-2xl shadow-xl border-l-2 border-red-600 space-y-6"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <FaMapMarkerAlt className="text-blue-500 mr-3" />
-                Contact Information
+                <FaCar className="text-red-600 mr-3" />
+                Workshop Information
               </h3>
 
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <FaMapMarkerAlt className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
+                  <FaMapMarkerAlt className="text-red-600 mt-1 mr-4 flex-shrink-0" />
                   <div>
-                    <h4 className="font-medium text-gray-900">Address</h4>
-                    <p className="text-gray-600">B152, Vidhan Shaba Nagar T Point, Dhalai, Jaipur, Patrakar Colony, Jaipur - 302020 (Near Patrakar Colony )</p>
+                    <h4 className="font-medium text-gray-900">Workshop Address</h4>
+                    <p className="text-gray-600">B152, Vidhan Shaba Nagar T Point, Dhalai, Jaipur, Patrakar Colony, Jaipur - 302020 (Near Patrakar Colony)</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <FaEnvelope className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
+                  <FaEnvelope className="text-red-600 mt-1 mr-4 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-gray-900">Email</h4>
-                    <a href="mailto:work.yogirajkumar@gmail.com" className="text-gray-600 hover:text-blue-600 transition">
+                    <a href="mailto:bajdoliyaworkshop2018@gmail.com" className="text-gray-600 hover:text-red-600 transition">
                       bajdoliyaworkshop2018@gmail.com
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <FaPhoneAlt className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
+                  <FaPhoneAlt className="text-red-600 mt-1 mr-4 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-gray-900">Phone</h4>
-                    <a href="tel:+919785641782" className="text-gray-600 hover:text-blue-600 transition">
+                    <a href="tel:+919785641782" className="text-gray-600 hover:text-red-600 transition">
                       +91 97856 41782
                     </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <FaOilCan className="text-red-600 mt-1 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-gray-900">Working Hours</h4>
+                    <p className="text-gray-600">Monday - Saturday: 8:00 AM - 8:00 PM</p>
+                    <p className="text-gray-600">Sunday: 10:00 AM - 4:00 PM</p>
                   </div>
                 </div>
               </div>
 
               {/* Social Media Links */}
               <div className="mt-8">
-                <h4 className="font-medium text-gray-900 mb-4">Connect With Me</h4>
+                <h4 className="font-medium text-gray-900 mb-4">Follow Our Workshop</h4>
                 <div className="flex space-x-4">
                   {[
-                    { icon: <FaLinkedin />, color: "text-blue-700", href: "https://www.linkedin.com/in/rajkumaryogi-jnu/" },
-                    { icon: <FaGithub />, color: "text-black-700", href: "https://github.com/Rajkumaryogi" },
-                    { icon: <FaTwitter />, color: "text-blue-400", href: "https://x.com/rajkumar6777y" },
-                    { icon: <FaFacebook />, color: "text-blue-600", href: "https://www.facebook.com/raj.yogi.1811" },
-                    { icon: <FaInstagram />, color: "text-pink-500", href: "https://www.instagram.com/raj__yogii/" },
+                    { icon: <FaFacebook />, color: "hover:text-red-600", href: "https://www.facebook.com/raj.yogi.1811" },
+                    { icon: <FaInstagram />, color: "hover:text-red-600", href: "https://www.instagram.com/raj__yogii/" },
+                    { icon: <FaTwitter />, color: "hover:text-red-600", href: "https://x.com/rajkumar6777y" },
                   ].map((social, index) => (
                     <motion.a
                       key={index}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${social.color} text-2xl hover:scale-110 transition-transform`}
+                      className={`text-gray-600 text-2xl ${social.color} transition-colors`}
                       whileHover={{ y: -3 }}
                     >
                       {social.icon}
