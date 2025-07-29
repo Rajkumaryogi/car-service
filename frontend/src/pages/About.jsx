@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FaTools, FaCarAlt, FaUsers, FaShieldAlt, FaPhone, FaClock } from 'react-icons/fa';
+import { FaTools, FaCarAlt, FaUsers, FaShieldAlt, FaPhone, FaClock, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import { MdEngineering } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -106,7 +106,7 @@ const About = () => {
               className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-6"
               variants={itemVariants}
             >
-              About Bajdoliya Workshop
+              About <span className="text-red-400">Bajdoliya Workshop</span>
             </motion.h1>
             <motion.p 
               className="max-w-2xl mx-auto text-xl"
@@ -148,7 +148,7 @@ const About = () => {
             <img
               src="https://miro.medium.com/v2/resize:fit:4320/1*JktzC9GrA_l4yz0cCy8a5Q.jpeg"
               alt="Workshop interior"
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover border-2 border-red-600"
             />
           </motion.div>
         </motion.section>
@@ -174,11 +174,11 @@ const About = () => {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-100"
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-600 text-white mb-4 mx-auto">
+                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-red-600 text-white mb-4 mx-auto">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
@@ -210,11 +210,11 @@ const About = () => {
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center border border-gray-100"
                 variants={itemVariants}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="h-40 w-40 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white shadow-lg">
+                <div className="h-40 w-40 rounded-full overflow-hidden mx-auto mb-4 border-4 border-red-100 shadow-lg">
                   <img
                     src={member.img}
                     alt={member.name}
@@ -224,7 +224,7 @@ const About = () => {
                 <h3 className="text-xl font-medium text-gray-900 mb-1">
                   {member.name}
                 </h3>
-                <p className="text-blue-600 mb-3">{member.role}</p>
+                <p className="text-red-600 mb-3">{member.role}</p>
                 <p className="text-gray-600">
                   {member.bio}
                 </p>
@@ -236,36 +236,97 @@ const About = () => {
 
       {/* CTA */}
       <motion.section 
-        className="bg-gray-900 text-white py-12"
-        variants={fadeIn}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h2 
-            className="text-3xl font-extrabold sm:text-4xl mb-6"
+      className="bg-gray-900 text-white py-12"
+      variants={fadeIn}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-8 items-center">
+          {/* Google Map Section - Left Side */}
+          <motion.div 
+            className="w-full lg:w-1/2"
             variants={itemVariants}
           >
-            Ready to experience the Bajdoliya difference?
-          </motion.h2>
-          <motion.div className="flex justify-center gap-4" variants={itemVariants}>
-            <motion.button
-              onClick={() => navigate('/login')}
-              className="px-6 py-3 bg-white text-blue-700 font-medium rounded-md"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Book Appointment
-            </motion.button>
-            <motion.button
-              onClick={() => navigate('/contact')}
-              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Contact Us
-            </motion.button>
+            <div className="h-64 sm:h-80 lg:h-96 rounded-xl shadow-2xl overflow-hidden border-2 border-red-500">
+              <iframe
+                title="Bajdoliya Workshop Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.123456789012!2d75.7478112!3d26.8410987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5ea05c93e09%3A0x860a04daca91e807!2sBajdoliya%20Workshop%20(Foam%20Car%20Wash)!5e0!3m2!1sen!2sin!4v1712345678901!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                allowFullScreen=""
+                loading="lazy"
+                className="rounded-xl"
+              />
+            </div>
+
+            {/* Address Box - Mobile Only */}
+            <div className="mt-4 lg:hidden bg-gray-800 p-4 rounded-lg">
+              <div className="flex items-start">
+                <FaMapMarkerAlt className="text-red-500 mt-1 mr-3 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium">Our Location</h4>
+                  <p className="text-gray-300 text-sm">
+                    B152, Vidhan Shaba Nagar T Point, Dhalai, Jaipur - 302020
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA Content - Right Side */}
+          <motion.div 
+            className="w-full lg:w-1/2 text-center lg:text-left"
+            variants={itemVariants}
+          >
+            <h2 className="text-3xl font-extrabold sm:text-4xl mb-6">
+              Ready to experience the <span className="text-red-400">Bajdoliya</span> difference?
+            </h2>
+            
+            <p className="text-gray-300 mb-8 text-lg">
+              Visit our premium workshop or schedule your appointment today for exceptional car care.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <motion.button
+                onClick={() => navigate('/login')}
+                className="px-6 py-3 bg-white text-red-600 font-medium rounded-md hover:bg-gray-100 transition-colors flex items-center justify-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaCalendarAlt className="mr-2" />
+                Book Appointment
+              </motion.button>
+              <motion.button
+                onClick={() => navigate('/contact')}
+                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors flex items-center justify-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaPhone className="mr-2" />
+                Contact Us
+              </motion.button>
+            </div>
+
+            {/* Additional Info - Desktop Only */}
+            <div className="mt-8 hidden lg:block bg-gray-800 p-4 rounded-lg">
+              <div className="flex items-start">
+                <FaMapMarkerAlt className="text-red-500 mt-1 mr-3 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium">Bajdoliya Workshop</h4>
+                  <p className="text-gray-300 text-sm">
+                    B152, Vidhan Shaba Nagar T Point<br />
+                    Dhalai, Jaipur - 302020<br />
+                    Near Patrakar Colony
+                  </p>
+                  <p className="text-gray-300 text-sm mt-2">
+                    <strong>Hours:</strong> Mon-Sat 8AM-8PM | Sun 10AM-4PM
+                  </p>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
-      </motion.section>
+      </div>
+    </motion.section>
     </motion.div>
   );
 };
