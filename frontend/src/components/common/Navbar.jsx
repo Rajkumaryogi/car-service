@@ -1,7 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import logo from '../../assets/logo.jpeg'
 import { useState, useEffect } from 'react'
+import { FaCar, FaTools, FaUserCog, FaCalendarAlt, FaShoppingCart, FaHome, FaInfoCircle, FaPhoneAlt, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -28,70 +29,76 @@ export default function Navbar() {
   }
 
   const commonLinks = [
-    { path: "/", name: "Home" },
-    { path: "/about", name: "About" },
-    { path: "/contact", name: "Contact" },
-    { path: "/services", name: "Book Services" },
+    { path: "/", name: "Home", icon: <FaHome className="mr-2" /> },
+    { path: "/about", name: "About", icon: <FaInfoCircle className="mr-2" /> },
+    { path: "/contact", name: "Contact", icon: <FaPhoneAlt className="mr-2" /> },
+    { path: "/services", name: "Services", icon: <FaTools className="mr-2" /> },
   ]
 
   const userLinks = user ? (
-    user.isAdmin ? (
-      [{ path: "/admin", name: "Admin-Dashboard" },
-        { path: "/admin/users", name: "Users" },
-        { path: "/admin/bookings", name: "Bookings" },
-        { path: "/admin/services", name: "Services" }
-      ]
-    ) : (
-      [
-        { path: "/dashboard", name: "Dashboard" },
-        { path: "/bookings", name: "My Bookings" },
-        { path: "/cart", name: "Cart" }
-      ]
-    )
+    user.isAdmin ? [
+      { path: "/admin", name: "Dashboard", icon: <FaUserCog className="mr-2" /> },
+      { path: "/admin/users", name: "Users", icon: <FaUserCog className="mr-2" /> },
+      { path: "/admin/bookings", name: "Bookings", icon: <FaCalendarAlt className="mr-2" /> },
+      { path: "/admin/services", name: "Services", icon: <FaTools className="mr-2" /> }
+    ] : [
+      { path: "/dashboard", name: "Dashboard", icon: <FaUserCog className="mr-2" /> },
+      { path: "/bookings", name: "Bookings", icon: <FaCalendarAlt className="mr-2" /> },
+      { path: "/cart", name: "Cart", icon: <FaShoppingCart className="mr-2" /> }
+    ]
   ) : []
 
   return (
-    <nav className={`bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-3'}`}>
+    <nav className={`bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-1' : 'py-2'}`}>
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-between items-center">
           {/* Logo and Brand */}
-          <Link to="/" className="flex items-center space-x-2 md:space-x-4 max-w-full overflow-hidden">
+          <NavLink to="/" className="flex items-center space-x-2 md:space-x-3 max-w-full overflow-hidden">
             <img 
               src={logo} 
-              alt="Logo" 
-              className="navbar-logo h-12 sm:h-14 md:h-16 lg:h-20 w-auto object-contain"
+              alt="Bajdoliya Workshop Logo" 
+              className="h-10 sm:h-12 md:h-14 w-auto object-contain"
             />
-            <span className="navbar-brand text-base sm:text-lg md:text-xl font-semibold text-gray-800 truncate">
-              BAJDOLIYA WORKSHOP
+            <span className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
+              BAJDOLIYA <span className="text-gray-800">WORKSHOP</span>
             </span>
-          </Link>
+          </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex flex-wrap items-center gap-2 lg:gap-4">
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
             {[...commonLinks, ...userLinks].map((link) => (
-              <Link 
+              <NavLink 
                 key={link.path}
                 to={link.path}
-                className="text-gray-700 hover:text-blue-600 px-2 py-1 rounded-md font-medium"
+                className={({ isActive }) => 
+                  `flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
+                  ${isActive ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-500'}`
+                }
               >
+                {link.icon}
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
 
             {user ? (
               <button 
                 onClick={handleLogout}
-                className="text-gray-700 hover:text-blue-600 px-2 py-1 rounded-md font-medium"
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-red-500 rounded-md transition-colors"
               >
+                <FaSignOutAlt className="mr-2" />
                 Logout
               </button>
             ) : (
-              <Link 
+              <NavLink 
                 to="/login" 
-                className="text-gray-700 hover:text-blue-600 px-2 py-1 rounded-md font-medium"
+                className={({ isActive }) => 
+                  `flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
+                  ${isActive ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-700 hover:text-red-500'}`
+                }
               >
+                <FaSignInAlt className="mr-2" />
                 Login
-              </Link>
+              </NavLink>
             )}
           </div>
 
@@ -99,7 +106,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center">
             <button 
               onClick={toggleMobileMenu}
-              className="text-gray-700 focus:outline-none p-2 rounded-md hover:bg-gray-100"
+              className="text-gray-700 focus:outline-none p-2 rounded-md hover:bg-red-50 transition-colors"
               aria-expanded={isMobileMenuOpen}
               aria-label="Toggle menu"
             >
@@ -117,33 +124,42 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="mobile-menu md:hidden bg-white pt-2 pb-4 space-y-2 shadow-lg rounded-b-lg">
+          <div className="md:hidden bg-white pt-2 pb-4 space-y-1 shadow-lg rounded-b-lg">
             {[...commonLinks, ...userLinks].map((link) => (
-              <Link 
+              <NavLink 
                 key={link.path}
                 to={link.path}
-                className="block px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md font-medium"
+                className={({ isActive }) => 
+                  `flex items-center px-4 py-3 text-sm font-medium rounded-md mx-2 transition-colors
+                  ${isActive ? 'bg-red-50 text-red-600' : 'text-gray-700 hover:bg-red-50 hover:text-red-500'}`
+                }
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                {link.icon}
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
 
             {user ? (
               <button 
                 onClick={handleLogout}
-                className="block w-full text-left px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md font-medium"
+                className="flex items-center w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-500 rounded-md mx-2 transition-colors"
               >
+                <FaSignOutAlt className="mr-2" />
                 Logout
               </button>
             ) : (
-              <Link 
+              <NavLink 
                 to="/login" 
-                className="block px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md font-medium"
+                className={({ isActive }) => 
+                  `flex items-center px-4 py-3 text-sm font-medium rounded-md mx-2 transition-colors
+                  ${isActive ? 'bg-red-50 text-red-600' : 'text-gray-700 hover:bg-red-50 hover:text-red-500'}`
+                }
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <FaSignInAlt className="mr-2" />
                 Login
-              </Link>
+              </NavLink>
             )}
           </div>
         )}
