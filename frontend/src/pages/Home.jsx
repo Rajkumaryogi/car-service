@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -16,6 +17,33 @@ import {
 const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+ // Updated image arrays with different images for mobile and desktop
+const desktopImages = [
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+];
+
+// Different set of images for mobile
+const mobileImages = [
+  "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1547038577-da80abbc4f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === desktopImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [desktopImages.length]);
 
   // Animation variants
   const container = {
@@ -86,10 +114,42 @@ const Home = () => {
       variants={container}
       className="bg-white"
     >
-      {/* Hero Section - Mobile Optimized */}
+      {/* Hero Section with Rotating Background */}
       <div className="relative bg-gray-900 text-white overflow-hidden h-[80vh] min-h-[500px]">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative h-full flex items-center px-4 sm:px-6 lg:px-8">
+  {/* Desktop Background Images */}
+  <div className="hidden md:block absolute inset-0">
+    {desktopImages.map((image, index) => (
+      <div
+        key={`desktop-${index}`}
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          index === currentImageIndex ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ 
+          backgroundImage: `url(${image})`,
+          backgroundPosition: 'center center'
+        }}
+      />
+    ))}
+  </div>
+
+  {/* Mobile Background Images */}
+  <div className="md:hidden absolute inset-0">
+    {mobileImages.map((image, index) => (
+      <div
+        key={`mobile-${index}`}
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          index === currentImageIndex ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ 
+          backgroundImage: `url(${image})`,
+          backgroundPosition: 'center center'
+        }}
+      />
+    ))}
+  </div>
+
+  <div className="absolute inset-0 bg-black opacity-50"></div>
+  <div className="relative h-full flex items-center px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center w-full" variants={container}>
             <motion.h1
               className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl mb-4 px-4"
@@ -151,6 +211,7 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Rest of your existing components remain unchanged */}
       {/* Services Quick Links */}
       <motion.section className="py-12 bg-white" variants={fadeIn}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
