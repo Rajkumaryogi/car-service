@@ -22,7 +22,7 @@ export default function AdminLogin() {
     const { email, password } = e.target.elements
     
     try {
-      await adminLogin(email, password)
+      await adminLogin(email.value, password.value)
       navigate('/admin')
     } catch (err) {
       setError(err.response?.data?.error || 'Admin login failed')
@@ -34,21 +34,21 @@ export default function AdminLogin() {
 
   if (loading || user?.isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-blue-600 mx-auto mb-4" />
-          <p className="text-lg">Loading admin dashboard...</p>
+          <FaSpinner className="animate-spin text-4xl text-red-600 mx-auto mb-4" />
+          <p className="text-lg text-gray-800">Loading admin dashboard...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100">
         <div className="text-center mb-8">
-          <div className="mx-auto bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-            <FaUserShield className="text-blue-600 text-3xl" />
+          <div className="mx-auto bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <FaUserShield className="text-red-600 text-3xl" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Admin Portal</h1>
           <p className="text-gray-600 mt-2">Sign in to access the dashboard</p>
@@ -73,8 +73,9 @@ export default function AdminLogin() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 required
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="admin@example.com"
                 defaultValue="rajyogi1811@gmail.com"
               />
@@ -91,8 +92,9 @@ export default function AdminLogin() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 required
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="••••••••"
               />
               <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -103,8 +105,8 @@ export default function AdminLogin() {
             type="submit"
             disabled={isSubmitting}
             className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-white font-medium ${
-              isSubmitting ? 'bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
-            } transition-colors`}
+              isSubmitting ? 'bg-red-500' : 'bg-red-600 hover:bg-red-700'
+            } transition-colors shadow-md`}
           >
             {isSubmitting ? (
               <>
@@ -118,9 +120,7 @@ export default function AdminLogin() {
               </>
             )}
           </button>
-          
         </form>
-        
       </div>
     </div>
   )
