@@ -72,7 +72,7 @@ export default function Footer() {
               <h3 className="text-xl font-bold text-gray-900">BAJDOLIYA WORKSHOP</h3>
             </div>
             <p className="text-gray-600 mb-4 text-sm sm:text-base">
-              Your trusted partner for premium car services. We deliver
+              Your trusted partner for premium car service at Bajdoliya Workshop. We deliver
               excellence with every repair and maintenance service.
             </p>
             <div className="flex space-x-4">
@@ -129,19 +129,19 @@ export default function Footer() {
               <li className="flex items-start">
                 <FaPhone className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  +91 98765 43210
+                  +91 93142 01111
                 </span>
               </li>
               <li className="flex items-start">
                 <FaEnvelope className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  contact@bajdoliya.com
+                  bajdoliyaworkshop2018@gmail.com
                 </span>
               </li>
               <li className="flex items-start">
                 <FaMapMarkerAlt className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  123 Auto Street, Workshop City, WC 12345
+                  B152, Vidhan Shaba Nagar T Point, Dhalai, Jaipur, Patrakar Colony, Jaipur - 302020 (Near Patrakar Colony)
                 </span>
               </li>
               <li className="flex items-start">
