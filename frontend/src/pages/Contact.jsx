@@ -304,9 +304,9 @@ const Contact = () => {
                 <h4 className="font-medium text-gray-900 mb-4">Follow Our Workshop</h4>
                 <div className="flex space-x-4">
                   {[
-                    { icon: <FaFacebook />, color: "hover:text-red-600", href: "https://www.facebook.com/raj.yogi.1811" },
-                    { icon: <FaInstagram />, color: "hover:text-red-600", href: "https://www.instagram.com/raj__yogii/" },
-                    { icon: <FaTwitter />, color: "hover:text-red-600", href: "https://x.com/rajkumar6777y" },
+                    { icon: <FaFacebook />, color: "hover:text-red-600", href: "https://www.facebook.com/" },
+                    { icon: <FaInstagram />, color: "hover:text-red-600", href: "https://www.instagram.com/" },
+                    { icon: <FaTwitter />, color: "hover:text-red-600", href: "https://x.com/" },
                   ].map((social, index) => (
                     <motion.a
                       key={index}
