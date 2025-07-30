@@ -37,7 +37,7 @@ exports.adminLogin = async (req, res) => {
         name: admin.name,
       },
     });
-    console.log("Admin tokens:", admin.tokens);
+    // console.log("Admin tokens:", admin.tokens);
   } catch (err) {
     console.error("Login error:", err);
     res.status(400).send({
@@ -61,12 +61,12 @@ exports.adminLogout = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    console.log("Admin making request:", req.admin); // Debug log
+    // console.log("Admin making request:", req.admin); // Debug log
     const users = await User.find({});
-    console.log("Found users:", users.length); // Debug log
+    // console.log("Found users:", users.length); // Debug log
     res.send(users);
   } catch (err) {
-    console.error("Get all users error:", err); // Debug log
+    // console.error("Get all users error:", err); // Debug log
     res.status(500).send(err);
   }
 };

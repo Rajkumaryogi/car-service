@@ -3,10 +3,10 @@ const SendMessageModel = require("../models/SendMessage.js");
 exports.sendMessage = async (req, res) => {
   try {
     const { name, email, message } = req.body;
-    console.log("Received message:", { name, email, message });
+    // console.log("Received message:", { name, email, message });
 
     const newMessage = new SendMessageModel({ name, email, message });
-    console.log("Saving message to database:", newMessage);
+    // console.log("Saving message to database:", newMessage);
     await newMessage.save();
     res.status(201).json({ message: "Message sent successfully!" });
   } catch (error) {

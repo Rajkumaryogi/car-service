@@ -58,7 +58,7 @@ export default function RegisterForm({ onSubmit }) {
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
-            placeholder="John Doe"
+            placeholder="example: Yogi"
             required
           />
         </div>
@@ -78,7 +78,7 @@ export default function RegisterForm({ onSubmit }) {
             value={formData.email}
             onChange={(e) => setFormData({...formData, email: e.target.value})}
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
-            placeholder="you@example.com"
+            placeholder="example: yogi@example.com"
             required
           />
         </div>
@@ -98,7 +98,7 @@ export default function RegisterForm({ onSubmit }) {
             value={formData.phone}
             onChange={(e) => setFormData({...formData, phone: e.target.value})}
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
-            placeholder="+1 (555) 123-4567"
+            placeholder="+91 55512-34567"
           />
         </div>
       </div>

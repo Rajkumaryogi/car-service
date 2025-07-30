@@ -47,7 +47,7 @@ export default function LoginForm({ onSubmit }) {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className="block w-full pl-10 pr-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
-            placeholder="you@example.com"
+            placeholder="example: yogi@gmail.com"
             required
           />
         </div>
