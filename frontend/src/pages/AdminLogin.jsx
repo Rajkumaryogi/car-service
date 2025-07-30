@@ -22,7 +22,7 @@ export default function AdminLogin() {
     const { email, password } = e.target.elements
     
     try {
-      await adminLogin(email.value, password.value)
+      await adminLogin(email, password)
       navigate('/admin')
     } catch (err) {
       setError(err.response?.data?.error || 'Admin login failed')
