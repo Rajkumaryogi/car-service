@@ -13,6 +13,7 @@ export default function Bookings() {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [expandedBooking, setExpandedBooking] = useState(null)
+  const [cancellingBookingId, setCancellingBookingId] = useState(null)
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -46,6 +47,31 @@ export default function Bookings() {
       Rejected: 'bg-gray-100 text-gray-800'
     }
     return statusClasses[status] || 'bg-gray-100 text-gray-800'
+  }
+
+  const handleCancelBooking = async (bookingId) => {
+    if (!window.confirm('Are you sure you want to cancel this booking?')) {
+      return
+    }
+
+    try {
+      setCancellingBookingId(bookingId)
+      await bookingService.cancelService(bookingId)
+      
+      // Update the local state to reflect the cancellation
+      setBookings(bookings.map(booking => 
+        booking._id === bookingId 
+          ? { ...booking, status: 'Cancelled' } 
+          : booking
+      ))
+      
+      toast.success('Booking cancelled successfully')
+    } catch (err) {
+      console.error('Failed to cancel booking:', err)
+      toast.error(err.message || 'Failed to cancel booking. Please try again.')
+    } finally {
+      setCancellingBookingId(null)
+    }
   }
 
   if (loading) {
@@ -208,9 +234,17 @@ export default function Bookings() {
 
                     {booking.status === 'Pending' && (
                       <div className="mt-5 flex justify-end">
-                        <button className="flex items-center gap-2 px-4 py-2.5 border border-red-300 rounded-lg text-red-600 hover:bg-red-50 transition-colors">
-                          <FaTimes />
-                          Cancel Booking
+                        <button 
+                          onClick={() => handleCancelBooking(booking._id)}
+                          disabled={cancellingBookingId === booking._id}
+                          className="flex items-center gap-2 px-4 py-2.5 border border-red-300 rounded-lg text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                        >
+                          {cancellingBookingId === booking._id ? (
+                            <FaSpinner className="animate-spin" />
+                          ) : (
+                            <FaTimes />
+                          )}
+                          {cancellingBookingId === booking._id ? 'Cancelling...' : 'Cancel Booking'}
                         </button>
                       </div>
                     )}

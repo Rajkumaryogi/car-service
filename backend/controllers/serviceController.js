@@ -37,3 +37,27 @@ exports.getAllServices = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+
+exports.cancelService = async (req, res) => {
+  try {
+    const serviceId = req.params.id;
+    const service = await CarService.findById(serviceId);
+    
+    if (!service) {
+      return res.status(404).json({ success: false, message: 'Service not found' });
+    }
+    
+    if (service.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'You are not authorized to cancel this service' });
+    }
+    
+    await CarService.findByIdAndDelete(serviceId);
+    
+    // req.io.emit('serviceCancelled', serviceId);
+    
+    res.status(200).json({ success: true, message: 'Service cancelled successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message || 'Failed to cancel service' });
+  }
+};
