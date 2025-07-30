@@ -130,6 +130,7 @@ export default function Footer() {
                 <FaPhone className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
                 <strong>
+                <a href="tel:+919314201111" className="text-gray-600 hover:text-red-600 transition"></a>
                   +91 93142 01111
                 </strong>
                 </span>

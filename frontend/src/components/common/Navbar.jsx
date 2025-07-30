@@ -57,7 +57,7 @@ export default function Navbar() {
             <img 
               src={logo} 
               alt="Bajdoliya Workshop Logo" 
-              className="h-10 sm:h-12 md:h-14 w-auto object-contain"
+              className="h-12 sm:h-16 md:h-24 w-auto object-contain"
             />
             <span className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
               BAJDOLIYA <span className="text-gray-800">WORKSHOP</span>

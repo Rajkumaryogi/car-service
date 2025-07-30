@@ -283,7 +283,7 @@ const Contact = () => {
                   <FaPhoneAlt className="text-red-600 mt-1 mr-4 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-gray-900">Phone</h4>
-                    <a href="tel:+919785641782" className="text-gray-600 hover:text-red-600 transition">
+                    <a href="tel:+919314201111" className="text-gray-600 hover:text-red-600 transition">
                       +91 93142 01111
                     </a>
                   </div>
