@@ -129,7 +129,9 @@ export default function Footer() {
               <li className="flex items-start">
                 <FaPhone className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
+                <strong>
                   +91 93142 01111
+                </strong>
                 </span>
               </li>
               <li className="flex items-start">
@@ -141,7 +143,7 @@ export default function Footer() {
               <li className="flex items-start">
                 <FaMapMarkerAlt className="text-red-600 mt-0.5 mr-3 flex-shrink-0 text-sm sm:text-base" />
                 <span className="text-gray-600 text-sm sm:text-base">
-                  B152, Vidhan Shaba Nagar T Point, Dhalai, Jaipur, Patrakar Colony, Jaipur - 302020 (Near Patrakar Colony)
+                  B152, Vidhan Shaba Nagar T Point, Dholai, Patrakar Colony, Jaipur - 302020
                 </span>
               </li>
               <li className="flex items-start">
