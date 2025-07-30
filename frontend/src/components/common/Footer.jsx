@@ -76,17 +76,14 @@ export default function Footer() {
               excellence with every repair and maintenance service.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
+              <a href="https://www.facebook.com/" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaFacebook className="text-lg sm:text-xl" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
+              <a href="https://www.x.com/" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaTwitter className="text-lg sm:text-xl" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
+              <a href="https://www.instagram.com/" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaInstagram className="text-lg sm:text-xl" />
-              </a>
-              <a href="#" className="text-gray-500 hover:text-red-600 transition-colors">
-                <FaLinkedin className="text-lg sm:text-xl" />
               </a>
             </div>
           </div>
