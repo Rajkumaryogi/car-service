@@ -99,6 +99,7 @@ export default function RegisterForm({ onSubmit }) {
             onChange={(e) => setFormData({...formData, phone: e.target.value})}
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
             placeholder="+91 55512-34567"
+            required
           />
         </div>
       </div>
