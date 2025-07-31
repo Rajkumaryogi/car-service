@@ -43,6 +43,7 @@ app.use(limiter);
 // CORS
 const allowedOrigins = [
   'http://localhost:5173',
+  'https://bajdoliyaworkshop.vercel.app',
   'https://bajdoliya-workshop.vercel.app',
   'https://car-service-silk-nu.vercel.app',
   'https://car-service-git-main-rajkumar-yogis-projects.vercel.app',
