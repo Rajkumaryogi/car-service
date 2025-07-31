@@ -1,76 +1,98 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as authService from '../services/auth'
-import * as adminService from '../services/admin' // New admin service
+import * as adminService from '../services/admin'
+import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
-      // Check for admin token first if it exists
-      const adminToken = localStorage.getItem('adminToken');
+      // Check for admin token first
+      const adminToken = localStorage.getItem('adminToken')
       if (adminToken) {
-        const adminData = await adminService.getCurrentAdmin();
+        const adminData = await adminService.getCurrentAdmin()
         if (adminData) {
-          setUser({ ...adminData, isAdmin: true });
-          return;
+          setUser({ ...adminData, isAdmin: true })
+          setInitialLoadComplete(true)
+          return
         }
       }
       
-      // Fall back to regular user auth
-      const userData = await authService.getCurrentUser().catch(() => null);
+      // Check regular user auth
+      const userData = await authService.getCurrentUser().catch(() => null)
       if (userData) {
-        setUser(userData);
-        return;
+        setUser(userData)
+        setInitialLoadComplete(true)
+        return
       }
       
-      // If neither exists, clear user
-      setUser(null);
+      // If neither exists
+      setUser(null)
     } catch (err) {
-      console.error('Auth check error:', err);
-      setUser(null);
+      console.error('Auth check error:', err)
+      setUser(null)
     } finally {
-      setLoading(false);
+      setLoading(false)
+      setInitialLoadComplete(true)
     }
-  };
-  
-  checkAuth();
-}, []);
+  }, [])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const login = async (email, password) => {
-  try {
-    const userData = await authService.login(email, password)
-    setUser({ ...userData, isUser: true });
-    return userData;
-  } catch (err) {
-    console.error('Login error:', err);
-    throw err; // ✅ Add this line!
+    try {
+      setLoading(true)
+      const userData = await authService.login(email, password)
+      setUser({ ...userData, isUser: true })
+      await checkAuth() // Refresh auth state after login
+      return userData
+    } catch (err) {
+      console.error('Login error:', err)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
   const adminLogin = async (email, password) => {
-  try {
-    const adminData = await adminService.adminLogin(email, password);
-    setUser({ ...adminData, isAdmin: true });
-    navigate('/admin');
-  } catch (err) {
-    console.error('Admin login failed:', err);
-    throw err; // Re-throw to be caught in the component
+    try {
+      setLoading(true)
+      const adminData = await adminService.adminLogin(email, password)
+      setUser({ ...adminData, isAdmin: true })
+      await checkAuth() // Refresh auth state after login
+      navigate('/admin')
+    } catch (err) {
+      console.error('Admin login failed:', err)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
-};
 
   const register = async (userData) => {
-    const newUser = await authService.register(userData)
-    setUser(newUser)
-    // navigate('/dashboard')
+    try {
+      setLoading(true)
+      const newUser = await authService.register(userData)
+      setUser(newUser)
+      await checkAuth() // Refresh auth state after registration
+      return newUser
+    } catch (err) {
+      console.error('Registration error:', err)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
 
   const logout = async () => {
@@ -89,12 +111,14 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ 
       user, 
-      loading, 
+      loading,
+      initialLoadComplete,
       setUser,
       login,
-      adminLogin, // Add adminLogin to context
+      adminLogin,
       register, 
-      logout 
+      logout,
+      checkAuth // Expose checkAuth for manual refreshes
     }}>
       {children}
     </AuthContext.Provider>

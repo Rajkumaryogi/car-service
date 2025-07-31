@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import * as bookingService from "../services/booking";
-import {
-  addUserCar,
-  updateUserProfile,
-  getUserProfile,
-} from "../services/user";
+import { addUserCar, updateUserProfile, getUserProfile } from "../services/user";
 import { toast } from "react-toastify";
 import {
   FaUserEdit,
@@ -17,14 +13,12 @@ import {
   FaSpinner,
   FaCheck,
   FaClock,
-  FaMoneyBillWave,
   FaCalendarDay,
   FaIdCard,
-  FaArrowLeft,
 } from "react-icons/fa";
 
 export default function Dashboard() {
-  const { user, setUser } = useAuth();
+  const { user, loading: authLoading, initialLoadComplete } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [showAddCarModal, setShowAddCarModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -39,26 +33,34 @@ export default function Dashboard() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!initialLoadComplete || !user) return;
+      
       try {
-        const bookingsData = await bookingService.getUserBookings();
+        setDataLoading(true);
+        const [bookingsData, userData] = await Promise.all([
+          bookingService.getUserBookings(),
+          getUserProfile()
+        ]);
+        
         setBookings(bookingsData);
-
-        // Load user profile data
-        const userData = await getUserProfile();
         setProfileData({
           name: userData.name,
           phone: userData.phone || "",
         });
       } catch (err) {
         console.error("Error fetching data:", err);
-        toast.error("Failed to load data");
+        toast.error("Failed to load dashboard data");
+      } finally {
+        setDataLoading(false);
       }
     };
+
     fetchData();
-  }, []);
+  }, [user, initialLoadComplete]);
 
   const handleCarInputChange = (e) => {
     const { name, value } = e.target;
@@ -82,19 +84,16 @@ export default function Dashboard() {
 
     try {
       const addedCar = await addUserCar(newCar);
-
       setUser({
         ...user,
         cars: [...(user.cars || []), addedCar],
       });
-
       setShowAddCarModal(false);
       setNewCar({ model: "", year: "", licensePlate: "" });
       toast.success("Car added successfully!");
     } catch (err) {
       console.error("Add car error:", err);
-      const errorMessage =
-        err.response?.data?.message || "Failed to add car. Please try again.";
+      const errorMessage = err.response?.data?.message || "Failed to add car. Please try again.";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -107,13 +106,11 @@ export default function Dashboard() {
 
     try {
       const updatedUser = await updateUserProfile(profileData);
-
       setUser({
         ...user,
         name: updatedUser.name,
         phone: updatedUser.phone,
       });
-
       toast.success("Profile updated successfully!");
       setShowProfileModal(false);
     } catch (err) {
@@ -123,6 +120,28 @@ export default function Dashboard() {
       setIsProfileLoading(false);
     }
   };
+
+  if (authLoading || !initialLoadComplete) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center">
+          <FaSpinner className="animate-spin text-4xl text-red-600 mb-4" />
+          <p className="text-lg text-gray-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (dataLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center">
+          <FaSpinner className="animate-spin text-4xl text-red-600 mb-4" />
+          <p className="text-lg text-gray-600">Loading your data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
