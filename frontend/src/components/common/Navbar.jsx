@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import logo from '../../assets/logo.jpeg'
 import { useState, useEffect } from 'react'
 import { FaCar, FaTools, FaUserCog, FaCalendarAlt, FaShoppingCart, FaHome, FaInfoCircle, FaPhoneAlt, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
+import UpperNavbar from './UpperNavbar'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -49,7 +50,8 @@ export default function Navbar() {
   ) : []
 
   return (
-    <nav className={`bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-1' : 'py-2'}`}>
+    <nav className={`bg-white mt-0 pt-0 shadow-md sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'py-1' : 'py-2'}`}>
+    <UpperNavbar />
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-between items-center">
           {/* Logo and Brand */}
