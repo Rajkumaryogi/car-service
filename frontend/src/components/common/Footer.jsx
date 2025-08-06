@@ -4,7 +4,7 @@ import {
   FaMapMarkerAlt,
   FaClock,
   FaFacebook,
-  FaTwitter,
+  FaWhatsapp, // Changed FaTwitter to FaWhatsapp
   FaInstagram,
   FaLinkedin,
   FaCar,
@@ -64,7 +64,7 @@ export default function Footer() {
           {/* About Section */}
           <div className="mb-6">
             <div className="flex items-center mb-4">
-              <img 
+              <img
                 src="https://gomechprod.blob.core.windows.net/gomech-retail/gomechanic_assets/category_icons_new/xxxhdpi/1.png"
                 alt="Bajdoliya Workshop Logo"
                 className="w-10 h-10 mr-3"
@@ -79,8 +79,14 @@ export default function Footer() {
               <a href="https://www.facebook.com/" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaFacebook className="text-lg sm:text-xl" />
               </a>
-              <a href="https://www.x.com/" className="text-gray-500 hover:text-red-600 transition-colors">
-                <FaTwitter className="text-lg sm:text-xl" />
+              {/* WhatsApp Link */}
+              <a
+                href="https://wa.me/919314201111"
+                className="text-gray-500 hover:text-red-600 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="text-lg sm:text-xl" />
               </a>
               <a href="https://www.instagram.com/" className="text-gray-500 hover:text-red-600 transition-colors">
                 <FaInstagram className="text-lg sm:text-xl" />
